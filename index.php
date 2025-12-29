@@ -11,7 +11,7 @@
 <body>
 
     <body>
-        <h1>Finalizar Compra</h1>
+        <h1>Finalizar Compra - Top Calçados</h1>
 
         <div id="paymentBrick_container"></div>
 
