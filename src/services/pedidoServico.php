@@ -2,7 +2,9 @@
 
 function salvarPedido($pdo, $dados)
 {
+
     try {
+        
         $sql = "INSERT INTO pedidos (cliente_email, valor_total, status_pagamento, psp_id, metodo_pagamento) 
                 VALUES (?, ?, ?, ?, ?)";
 

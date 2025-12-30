@@ -28,6 +28,10 @@
                         preferenceId: null,
                         payer: {
                             email: "teste@cliente.com",
+                            identification: {
+                                type: "CPF",
+                                number: "",
+                            }
                         },
                     },
                     customization: {

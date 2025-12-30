@@ -8,3 +8,4 @@ CREATE TABLE pedidos (
     psp_id VARCHAR(100), -- O ID que o Mercado Pago/Stripe vai te gerar
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE pedidos ADD COLUMN metodo_pagamento VARCHAR(50) AFTER psp_id;

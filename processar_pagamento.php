@@ -40,6 +40,10 @@ try {
         ]
     ]);
 
+    if (!$pdo) {
+        die(json_encode(["status" => "error", "message" => "Conexão PDO não existe!"]));
+    }
+
     salvarPedido($pdo, [
         'email' => $payment->payer->email,
         'valor' => $payment->transaction_amount,
