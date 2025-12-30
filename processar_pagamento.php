@@ -33,6 +33,8 @@ try {
         "payment_method_id" => $body['payment_method_id'],
         "payer" => [
             "email" => $body['payer']['email'],
+            "first_name" => $body['payer']['first_name'] ?? "Nome",
+            "last_name" => $body['payer']['last_name'] ?? "Sobrenome", 
             "identification" => [
                 "type" => $body['payer']['identification']['type'] ?? null,
                 "number" => $body['payer']['identification']['number'] ?? null,
@@ -56,7 +58,13 @@ try {
         "status" => $payment->status,
         "id" => $payment->id,
         "qr_code" => $payment->point_of_interaction->transaction_data->qr_code ?? null,
-        "qr_code_base64" => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null
+        "qr_code_base64" => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null,
+        "transaction_details" => [
+            "external_resource_url" => $payment->transaction_details->external_resource_url ?? null,
+            "barcode" => [
+                "content" => $payment->transaction_details->barcode->content ?? null
+            ]
+        ]
     ]);
 
 } catch (Exception $e) {

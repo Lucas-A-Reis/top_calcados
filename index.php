@@ -27,7 +27,7 @@
                         amount: 100.00,
                         preferenceId: null,
                         payer: {
-                            email: "teste@cliente.com",
+                            email: "",
                             identification: {
                                 type: "CPF",
                                 number: "",
@@ -69,6 +69,23 @@
                                                <p>Ou copie o código:</p>
                                                <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
                                                     icon: 'info'
+                                                });
+                                            } else if (result.transaction_details && result.transaction_details.external_resource_url) {
+                                                Swal.fire({
+                                                    title: 'Boleto Gerado!',
+                                                    icon: 'info',
+                                                    html: `
+                                                    <p>Linha digitável:</p>
+                                                    <input type="text" value="${result.transaction_details.barcode.content}" readonly style="width:100%; padding:10px; text-align:center;">
+                                                    <p style="margin-top:15px;">Clique no botão abaixo para visualizar o boleto:</p>`,
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Ver Boleto (PDF)',
+                                                    cancelButtonText: 'Fechar',
+                                                    confirmButtonColor: '#009ee3'
+                                                }).then((swalResult) => {
+                                                    if (swalResult.isConfirmed) {
+                                                        window.open(result.transaction_details.external_resource_url, '_blank');
+                                                    }
                                                 });
                                             } else {
                                                 Swal.fire('Pendente', 'Aguardando pagamento do boleto.', 'info');
