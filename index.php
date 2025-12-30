@@ -18,7 +18,6 @@
         <div id="paymentBrick_container"></div>
 
         <script>
-
             const mp = new MercadoPago('TEST-7e03c1e8-220e-40ad-b645-6e871e63d8e3');
             const bricksBuilder = mp.bricks();
 
@@ -61,40 +60,44 @@
                                                 Swal.fire({
                                                     title: 'Pague com Pix',
                                                     html: `<p>Aponte a câmera para o QR Code:</p>
-                                                    <img src="data:image/png;base64,${result.qr_code_base64}" style="width:200px">
-                                                    <br><br>
-                                                    <p>Ou copie o código:</p>
-                                                    <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
+                                               <img src="data:image/png;base64,${result.qr_code_base64}" style="width:200px">
+                                               <br><br>
+                                               <p>Ou copie o código:</p>
+                                               <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
                                                     icon: 'info'
                                                 });
                                             } else {
                                                 Swal.fire('Pendente', 'Aguardando pagamento do boleto.', 'info');
                                             }
+                                        } else {
+                                            Swal.fire('Erro', 'O pagamento não foi aprovado.', 'error');
                                         }
+                                        resolve();
                                     })
-                                resolve();
-                            })
-                                .catch((error) => {
-                                    Swal.fire({
-                                        title: 'Erro de Conexão',
-                                        text: 'Não conseguimos falar com o servidor.',
-                                        icon: 'error'
+                                    .catch((error) => {
+                                        console.error(error);
+                                        Swal.fire({
+                                            title: 'Erro de Conexão',
+                                            text: 'Não conseguimos falar com o servidor.',
+                                            icon: 'error'
+                                        });
+                                        reject();
                                     });
-                                    reject();
-                                });
-                        });
-                },
-                    onError: (error) => {
-                            console.error(error);
-            },
+                            });
+                        },
+                        onError: (error) => {
+                            console.error("Erro no Brick:", error);
+                        },
                     },
                 };
-            window.paymentBrickController = await bricksBuilder.create(
-                "payment",
-                "paymentBrick_container",
-                settings
-            );
+
+                window.paymentBrickController = await bricksBuilder.create(
+                    "payment",
+                    "paymentBrick_container",
+                    settings
+                );
             };
+
             renderPaymentBrick(bricksBuilder);
         </script>
     </body>

@@ -1,8 +1,10 @@
 <?php
 error_reporting(0);
 header('Content-Type: application/json');
+
 require_once 'config.php';
 require_once 'src/database/conecta.php';
+require_once 'src/services/pedidoServico.php';
 
 use MercadoPago\Client\Payment\PaymentClient;
 
@@ -24,13 +26,12 @@ try {
         ]
     ]);
 
-    $sql = "INSERT INTO pedidos (cliente_email, valor_total, status_pagamento, psp_id) VALUES (?, ?, ?, ?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $payment->payer->email,
-        $payment->transaction_amount,
-        $payment->status,
-        (string) $payment->id
+    salvarPedido($pdo, [
+        'email' => $payment->payer->email,
+        'valor' => $payment->transaction_amount,
+        'status' => $payment->status,
+        'pagamento_id' => (string) $payment->id,
+        'metodo' => $payment->payment_method_id
     ]);
 
     echo json_encode([
