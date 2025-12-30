@@ -1,5 +1,5 @@
 <?php
-error_reporting(0); 
+error_reporting(0);
 header('Content-Type: application/json');
 require_once 'config.php';
 require_once 'src/database/conecta.php';
@@ -33,10 +33,11 @@ try {
         (string) $payment->id
     ]);
 
-
     echo json_encode([
         "status" => $payment->status,
-        "id" => $payment->id
+        "id" => $payment->id,
+        "qr_code" => $payment->point_of_interaction->transaction_data->qr_code ?? null,
+        "qr_code_base64" => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null
     ]);
 
 } catch (Exception $e) {
