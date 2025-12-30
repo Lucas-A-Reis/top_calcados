@@ -22,12 +22,16 @@ try {
 
     $payment = $client->create([
         "transaction_amount" => (float) $body['transaction_amount'],
-        "token" => $body['token'],
+        "token" => $body['token'] ?? null,
         "description" => "Compra na Top Calçados",
-        "installments" => (int) $body['installments'],
+        "installments" => (int) ($body['installments'] ?? 1),
         "payment_method_id" => $body['payment_method_id'],
         "payer" => [
             "email" => $body['payer']['email'],
+            "identification" => [
+                "type" => $body['payer']['identification']['type'] ?? null,
+                "number" => $body['payer']['identification']['number'] ?? null,
+            ]
         ]
     ]);
 
