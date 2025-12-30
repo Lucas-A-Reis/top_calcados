@@ -8,8 +8,13 @@ require_once 'src/services/pedidoServico.php';
 
 use MercadoPago\Client\Payment\PaymentClient;
 
-
 $body = json_decode(file_get_contents('php://input'), true);
+
+if (!$body) {
+    http_response_code(400);
+    echo json_encode(["status" => "error", "message" => "Erro 400. Dados não foram recebidos corretamente."]);
+    exit;
+}
 
 $client = new PaymentClient();
 
