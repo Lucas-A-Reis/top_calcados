@@ -55,50 +55,45 @@
                                     .then((response) => response.json())
                                     .then((result) => {
                                         if (result.status === 'approved') {
-                                            Swal.fire({
-                                                title: 'Pagamento Confirmado!',
-                                                text: 'Seu calçado chegará em breve. ID: ' + result.id,
-                                                icon: 'success',
-                                                confirmButtonText: 'Ótimo!',
-                                                confirmButtonColor: '#28a745'
-                                            });
-                                        } else if (result.status === 'in_process') {
-                                            Swal.fire({
-                                                title: 'Pagamento em Análise',
-                                                text: 'Estamos processando sua compra. Avisaremos por e-mail!',
-                                                icon: 'info',
-                                                confirmButtonText: 'Entendido'
-                                            });
-                                        } else {
-                                            Swal.fire({
-                                                title: 'Ops! Algo deu errado',
-                                                text: 'O pagamento foi recusado ou houve um erro.',
-                                                icon: 'error',
-                                                confirmButtonText: 'Tentar novamente'
-                                            });
+                                            Swal.fire('Sucesso!', 'Pagamento aprovado!', 'success');
+                                        } else if (result.status === 'pending') {
+                                            if (result.qr_code_base64) {
+                                                Swal.fire({
+                                                    title: 'Pague com Pix',
+                                                    html: `<p>Aponte a câmera para o QR Code:</p>
+                                                    <img src="data:image/png;base64,${result.qr_code_base64}" style="width:200px">
+                                                    <br><br>
+                                                    <p>Ou copie o código:</p>
+                                                    <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
+                                                    icon: 'info'
+                                                });
+                                            } else {
+                                                Swal.fire('Pendente', 'Aguardando pagamento do boleto.', 'info');
+                                            }
                                         }
-                                        resolve();
                                     })
-                                    .catch((error) => {
-                                        Swal.fire({
-                                            title: 'Erro de Conexão',
-                                            text: 'Não conseguimos falar com o servidor.',
-                                            icon: 'error'
-                                        });
-                                        reject();
+                                resolve();
+                            })
+                                .catch((error) => {
+                                    Swal.fire({
+                                        title: 'Erro de Conexão',
+                                        text: 'Não conseguimos falar com o servidor.',
+                                        icon: 'error'
                                     });
-                            });
-                        },
-                        onError: (error) => {
+                                    reject();
+                                });
+                        });
+                },
+                    onError: (error) => {
                             console.error(error);
-                        },
+            },
                     },
                 };
-                window.paymentBrickController = await bricksBuilder.create(
-                    "payment",
-                    "paymentBrick_container",
-                    settings
-                );
+            window.paymentBrickController = await bricksBuilder.create(
+                "payment",
+                "paymentBrick_container",
+                settings
+            );
             };
             renderPaymentBrick(bricksBuilder);
         </script>
