@@ -29,7 +29,9 @@ try {
     $payment = $client->create([
         "transaction_amount" => (float) $body['transaction_amount'],
         "description" => "Compra na Top Calçados",
+        // "installments" => $body['installments'],
         "payment_method_id" => $body['payment_method_id'],
+        // "issuer_id" => $body['issuer_id'],
         "payer" => [
             "email" => $payerData['email'],
             "first_name" => $payerData['first_name'],
@@ -49,11 +51,8 @@ try {
         ]
     ]);
 
-    // if ($payment->transaction_details->barcode->content === null) {
-    //     header('Content-Type: text/plain');
-    //     echo json_encode(["status" => $payment->status, "detalhes" => $payment->status_detail]);
-    //     exit;
-    // }
+    $json_completo = json_encode($payment, JSON_PRETTY_PRINT);
+    file_put_contents('debug_pagamento.json', $json_completo);
 
     if (!$pdo) {
         die(json_encode(["status" => "error", "message" => "Conexão PDO não existe."]));
@@ -70,27 +69,14 @@ try {
     salvarPedido($pdo, $dados);
 
     $res = [
-        "status" => $payment->status,
         "id" => $payment->id,
+        "status" => $payment->status,
         "qr_code" => $payment->point_of_interaction->transaction_data->qr_code ?? null,
         "qr_code_base64" => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null,
+        // "external_resource_url" => $payment->transaction_details->external_resource_url,
+        // "digitable_line" => $payment->point_of_interaction->transaction_details->digitable_line
         // "body" => var_dump($body)
     ];
-
-    $transaction_data = $payment->point_of_interaction->transaction_data ?? null;
-
-    $res["external_resource_url"] = null;
-    $res["barcode_content"] = "Código não disponível";
-
-    if ($transaction_data) {
-        $res["external_resource_url"] = $transaction_data->ticket_url ?? null;
-        $res["barcode_content"] = $transaction_data->barcode->content ?? "Código não disponível";
-    }
-
-    if (empty($res["external_resource_url"]) && isset($payment->transaction_details)) {
-        $res["external_resource_url"] = $payment->transaction_details->external_resource_url ?? null;
-        $res["barcode_content"] = $payment->transaction_details->barcode->content ?? $res["barcode_content"];
-    }
 
     echo json_encode($res);
 

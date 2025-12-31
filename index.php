@@ -70,7 +70,7 @@
                                                <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
                                                     icon: 'info'
                                                 });
-                                            } else if (result.transaction_details && result.transaction_details.external_resource_url) {
+                                            } else if (result.external_resource_url && result.digitable_line) {
                                                 Swal.fire({
                                                     title: 'Boleto Gerado!',
                                                     icon: 'info',
@@ -80,7 +80,7 @@
                                                     <a href="${result.external_resource_url}" target="_blank" class="swal2-confirm swal2-styled" style="text-decoration:none">Ver PDF do Boleto</a>
                                                     <br><br>
                                                     <p>Linha digitável:</p>
-                                                    <input type="text" value="${result.barcode_content}" readonly style="width:100%; text-align:center;">
+                                                    <input type="text" value="${result.digitable_line}" readonly style="width:100%; text-align:center;">
                                                     `,
                                                     showCancelButton: true,
                                                     confirmButtonText: 'Ver Boleto (PDF)',

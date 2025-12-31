@@ -1,0 +1,103 @@
+{
+    "id": 1325778284,
+    "acquirer_reconciliation": [],
+    "sponsor_id": null,
+    "operation_type": "regular_payment",
+    "order": [],
+    "brand_id": null,
+    "build_version": "3.136.0-rc-1",
+    "binary_mode": false,
+    "external_reference": null,
+    "financing_group": null,
+    "status": "pending",
+    "status_detail": "pending_waiting_payment",
+    "store_id": null,
+    "taxes_amount": 0,
+    "date_created": "2025-12-31T15:05:17.381-04:00",
+    "live_mode": false,
+    "date_last_updated": "2025-12-31T15:05:17.381-04:00",
+    "date_of_expiration": "2026-01-04T23:00:00.000-04:00",
+    "deduction_schema": null,
+    "date_approved": null,
+    "money_release_date": null,
+    "money_release_schema": null,
+    "money_release_status": "pending",
+    "currency_id": "BRL",
+    "transaction_amount": 100,
+    "transaction_amount_refunded": 0,
+    "payer": {
+        "type": null,
+        "id": "1612677664",
+        "email": null,
+        "identification": {
+            "type": null,
+            "number": null
+        },
+        "first_name": null,
+        "last_name": null,
+        "entity_type": null,
+        "phone": {
+            "area_code": null,
+            "number": null,
+            "extension": null
+        }
+    },
+    "collector_id": 1409433757,
+    "counter_currency": null,
+    "payment_method_id": "bolbradesco",
+    "payment_method": {
+        "data": [],
+        "id": "bolbradesco",
+        "type": "ticket",
+        "issuer_id": "2006"
+    },
+    "payment_type_id": "ticket",
+    "pos_id": null,
+    "transaction_details": {
+        "financial_institution": "bradesco",
+        "net_received_amount": 0,
+        "total_paid_amount": 100,
+        "installment_amount": 0,
+        "overpaid_amount": 0,
+        "external_resource_url": "https:\/\/www.mercadopago.com.br\/sandbox\/payments\/1325778284\/ticket?caller_id=1612677664&payment_method_id=bolbradesco&payment_id=1325778284&payment_method_reference_id=6007543068&hash=a2806d1d-1a59-4bd5-acb4-e5fe31c4eb1a",
+        "payment_method_reference_id": "6007543068",
+        "acquirer_reference": "",
+        "payable_deferral_period": null,
+        "barcode": {
+            "content": "23794131600000100003380260600754306800633330"
+        },
+        "digitable_line": "23793380296060075430768006333303413160000010000",
+        "verification_code": "6007543068"
+    },
+    "fee_details": [],
+    "differential_pricing_id": null,
+    "authorization_code": null,
+    "captured": true,
+    "card": [],
+    "call_for_authorize_id": null,
+    "statement_descriptor": null,
+    "shipping_amount": 0,
+    "additional_info": {
+        "tracking_id": "platform:8|8.2.12,so:so;,type:SDK3.0.1,security:none"
+    },
+    "coupon_amount": 0,
+    "installments": 1,
+    "description": "Compra na Top Cal\u00e7ados",
+    "notification_url": null,
+    "issuer_id": "2006",
+    "processing_mode": "aggregator",
+    "merchant_account_id": null,
+    "merchant_number": null,
+    "metadata": [],
+    "marketplace_owner": null,
+    "integrator_id": null,
+    "corporation_id": null,
+    "platform_id": null,
+    "point_of_interaction": {
+        "type": "UNSPECIFIED"
+    },
+    "accounts_info": null,
+    "tags": null,
+    "refunds": [],
+    "release_info": null
+}
