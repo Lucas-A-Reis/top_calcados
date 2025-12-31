@@ -74,10 +74,14 @@
                                                 Swal.fire({
                                                     title: 'Boleto Gerado!',
                                                     icon: 'info',
+                                                    
                                                     html: `
+                                                    <p>Seu boleto foi gerado com sucesso.</p>
+                                                    <a href="${result.external_resource_url}" target="_blank" class="swal2-confirm swal2-styled" style="text-decoration:none">Ver PDF do Boleto</a>
+                                                    <br><br>
                                                     <p>Linha digitável:</p>
-                                                    <input type="text" value="${result.transaction_details.barcode.content}" readonly style="width:100%; padding:10px; text-align:center;">
-                                                    <p style="margin-top:15px;">Clique no botão abaixo para visualizar o boleto:</p>`,
+                                                    <input type="text" value="${result.barcode_content}" readonly style="width:100%; text-align:center;">
+                                                    `,
                                                     showCancelButton: true,
                                                     confirmButtonText: 'Ver Boleto (PDF)',
                                                     cancelButtonText: 'Fechar',

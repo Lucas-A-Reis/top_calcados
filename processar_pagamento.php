@@ -11,10 +11,6 @@ use MercadoPago\Client\Payment\PaymentClient;
 
 $body = json_decode(file_get_contents('php://input'), true);
 
-if ($body) {
-    $body = sanitizarDados($body);
-}
-
 if (!$body) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Erro 400. Dados não foram recebidos corretamente."]);
@@ -25,28 +21,45 @@ $client = new PaymentClient();
 
 try {
 
+    $payerData = $body['payer'];
+    $address = $payerData['address'];
+
+    $uf = (strlen($address['federal_unit']) > 2) ? "MG" : $address['federal_unit'];
+
     $payment = $client->create([
         "transaction_amount" => (float) $body['transaction_amount'],
-        "token" => $body['token'] ?? null,
         "description" => "Compra na Top Calçados",
-        "installments" => (int) ($body['installments'] ?? 1),
         "payment_method_id" => $body['payment_method_id'],
         "payer" => [
-            "email" => $body['payer']['email'],
-            "first_name" => $body['payer']['first_name'] ?? "Nome",
-            "last_name" => $body['payer']['last_name'] ?? "Sobrenome", 
+            "email" => $payerData['email'],
+            "first_name" => $payerData['first_name'],
+            "last_name" => $payerData['last_name'],
             "identification" => [
-                "type" => $body['payer']['identification']['type'] ?? null,
-                "number" => $body['payer']['identification']['number'] ?? null,
+                "type" => $payerData['identification']['type'],
+                "number" => $payerData['identification']['number']
+            ],
+            "address" => [
+                "zip_code" => preg_replace('/[^0-9]/', '', $address['zip_code']),
+                "street_name" => $address['street_name'],
+                "street_number" => $address['street_number'],
+                "neighborhood" => $address['neighborhood'],
+                "city" => $address['city'],
+                "federal_unit" => $uf
             ]
         ]
     ]);
 
+    // if ($payment->transaction_details->barcode->content === null) {
+    //     header('Content-Type: text/plain');
+    //     echo json_encode(["status" => $payment->status, "detalhes" => $payment->status_detail]);
+    //     exit;
+    // }
+
     if (!$pdo) {
-        die(json_encode(["status" => "error", "message" => "Conexão PDO não existe!"]));
+        die(json_encode(["status" => "error", "message" => "Conexão PDO não existe."]));
     }
 
-    salvarPedido($pdo, [
+    $dados = sanitizarDados([
         'email' => $payment->payer->email,
         'valor' => $payment->transaction_amount,
         'status' => $payment->status,
@@ -54,20 +67,39 @@ try {
         'metodo' => $payment->payment_method_id
     ]);
 
-    echo json_encode([
+    salvarPedido($pdo, $dados);
+
+    $res = [
         "status" => $payment->status,
         "id" => $payment->id,
         "qr_code" => $payment->point_of_interaction->transaction_data->qr_code ?? null,
         "qr_code_base64" => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null,
-        "transaction_details" => [
-            "external_resource_url" => $payment->transaction_details->external_resource_url ?? null,
-            "barcode" => [
-                "content" => $payment->transaction_details->barcode->content ?? null
-            ]
-        ]
-    ]);
+        // "body" => var_dump($body)
+    ];
+
+    $transaction_data = $payment->point_of_interaction->transaction_data ?? null;
+
+    $res["external_resource_url"] = null;
+    $res["barcode_content"] = "Código não disponível";
+
+    if ($transaction_data) {
+        $res["external_resource_url"] = $transaction_data->ticket_url ?? null;
+        $res["barcode_content"] = $transaction_data->barcode->content ?? "Código não disponível";
+    }
+
+    if (empty($res["external_resource_url"]) && isset($payment->transaction_details)) {
+        $res["external_resource_url"] = $payment->transaction_details->external_resource_url ?? null;
+        $res["barcode_content"] = $payment->transaction_details->barcode->content ?? $res["barcode_content"];
+    }
+
+    echo json_encode($res);
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    echo json_encode([
+        "status" => "error",
+        "message" => $e->getMessage(),
+        // "body" => var_dump($body)
+    ]);
+
 }
