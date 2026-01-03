@@ -36,7 +36,6 @@
                     },
                     customization: {
                         paymentMethods: {
-                            ticket: "all",
                             bankTransfer: "all",
                             creditCard: "all",
                             debitCard: "all",
@@ -71,7 +70,7 @@
                                                     icon: 'info'
                                                 });
                                             } else {
-                                                Swal.fire('Pendente', 'Aguardando pagamento do boleto.', 'info');
+                                                Swal.fire('Pendente', 'Aguardando pagamento.', 'info');
                                             }
                                         } else {
                                             Swal.fire('Erro', 'O pagamento não foi aprovado.', 'error');
