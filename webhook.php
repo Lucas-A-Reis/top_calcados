@@ -22,6 +22,7 @@ if (isset($data['type']) && $data['type'] === 'payment') {
             $payment = $client->get($id_do_post);
 
             $status_da_api = $payment->status;
+            // $status_da_api = "approved";
 
                 $pedido = buscarPedido($pdo, (string) $payment->id);
 

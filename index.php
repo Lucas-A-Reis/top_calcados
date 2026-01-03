@@ -21,6 +21,7 @@
             const mp = new MercadoPago('TEST-7e03c1e8-220e-40ad-b645-6e871e63d8e3');
             const bricksBuilder = mp.bricks();
 
+
             const renderPaymentBrick = async (bricksBuilder) => {
                 const settings = {
                     initialization: {
@@ -69,6 +70,7 @@
                                                <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
                                                     icon: 'info'
                                                 });
+                                             iniciarVigilancia(result.id);
                                             } else {
                                                 Swal.fire('Pendente', 'Aguardando pagamento.', 'info');
                                             }
@@ -102,6 +104,28 @@
             };
 
             renderPaymentBrick(bricksBuilder);
+
+            function iniciarVigilancia(idDoPagamento) {
+                const timer = setInterval(async () => {
+                    try {
+                        const resposta = await fetch(`checar_status_pagamento.php?psp_id=${idDoPagamento}`);
+                        const resultado = await resposta.json();
+
+                        if (resultado.status === 'approved') {
+                            clearInterval(timer);
+                            Swal.fire({
+                                title: 'Pagamento Aprovado!',
+                                text: 'Recebemos seu Pix com sucesso.',
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            })
+                        }
+                    } catch (e) {
+                        console.error("Erro na vigilância:", e);
+                    }
+                }, 3000);
+            }
         </script>
     </body>
 
