@@ -5,7 +5,8 @@ CREATE TABLE pedidos (
     cliente_email VARCHAR(100),
     valor_total DECIMAL(10,2),
     status_pagamento VARCHAR(20) DEFAULT 'pendente', -- pendente, aprovado, recusado
-    psp_id VARCHAR(100), -- O ID que o Mercado Pago/Stripe vai te gerar
+    psp_id VARCHAR(100),
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE pedidos ADD COLUMN metodo_pagamento VARCHAR(50) AFTER psp_id;
+ALTER TABLE pedidos ADD INDEX (psp_id);

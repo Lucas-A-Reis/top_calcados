@@ -1,5 +1,5 @@
 <?php
-require_once 'src/database/conecta.php';
+require_once '../src/database/conecta.php';
 
 $email_cliente = "teste@cliente.com";
 $valor = 199.90;
