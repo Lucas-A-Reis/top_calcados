@@ -11,9 +11,9 @@ use MercadoPago\Client\Payment\PaymentClient;
 
 $body = json_decode(file_get_contents('php://input'), true);
 
-if ($body) {
-    $body = sanitizarDados($body);
-}
+// if ($body) {
+//     $body = sanitizarDados($body);
+// }
 
 if (!$body) {
     http_response_code(400);
@@ -61,5 +61,7 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    echo json_encode(["status" => "error", "message" => $e->getMessage(), "details" => method_exists($e, 'getApiResponse') ? $e->getApiResponse()->getContent() : null 
+    ]);
+    exit;
 }

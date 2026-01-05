@@ -18,20 +18,20 @@
         <div id="paymentBrick_container"></div>
 
         <script>
-            const mp = new MercadoPago('TEST-7e03c1e8-220e-40ad-b645-6e871e63d8e3');
+            const mp = new MercadoPago('APP_USR-32846259-cd0f-4dae-a24c-e2541b35d5fa');
             const bricksBuilder = mp.bricks();
 
 
             const renderPaymentBrick = async (bricksBuilder) => {
                 const settings = {
                     initialization: {
-                        amount: 100.00,
+                        amount: 1.00,
                         preferenceId: null,
                         payer: {
-                            email: "teste@cliente.com",
+                            email: "claudiocostagoncalves1970@gmail.com",
                             identification: {
                                 type: "CPF",
-                                number: "",
+                                number: "86068830691",
                             }
                         },
                     },
@@ -120,6 +120,15 @@
                                 confirmButtonText: 'OK',
                                 allowOutsideClick: false
                             })
+                        } else if (resultado.status === 'rejected') {
+                            clearInterval(timer);
+                            Swal.fire({
+                                title: 'Pagamento Rejeitado',
+                                text: 'Seu pagamento foi rejeitado. Tente novamente.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                allowOutsideClick: false
+                            });
                         }
                     } catch (e) {
                         console.error("Erro na vigilância:", e);

@@ -11,6 +11,7 @@ MercadoPagoConfig::setAccessToken($_ENV['MP_ACCESS_TOKEN']);
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
+
 if (isset($data['type']) && $data['type'] === 'payment') {
 
     $id_do_post = $data['data']['id'] ?? null;
