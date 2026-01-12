@@ -1,25 +1,104 @@
-CREATE DATABASE ecommerce_teste;
-USE ecommerce_teste;
-CREATE TABLE pedidos (
+CREATE DATABASE IF NOT EXISTS top_calcados;
+USE top_calcados;
+
+CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    cliente_email VARCHAR(100),
-    valor_total DECIMAL(10,2),
-    status_pagamento VARCHAR(20) DEFAULT 'pendente',
-    psp_id VARCHAR(100),
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    codigo_2fa VARCHAR(6) NULL,
+    expiracao_2fa DATETIME NULL,
+    status TINYINT(1) DEFAULT 1
 );
-ALTER TABLE pedidos ADD COLUMN metodo_pagamento VARCHAR(50) AFTER psp_id;
-ALTER TABLE pedidos ADD INDEX (psp_id);
+
 CREATE TABLE clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    cpf VARCHAR(14) NOT NULL,
-    telefone VARCHAR(20),
-    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE INDEX idx_email_unico (email),
-    INDEX idx_cpf (cpf)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-ALTER TABLE pedidos ADD COLUMN cliente_id INT AFTER id;
-ALTER TABLE pedidos ADD CONSTRAINT fk_pedido_cliente 
-FOREIGN KEY (cliente_id) REFERENCES clientes(id);
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20)
+);
+
+CREATE TABLE enderecos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    logradouro VARCHAR(255) NOT NULL,
+    numero VARCHAR(20) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    uf CHAR(2) NOT NULL,
+    cep VARCHAR(9) NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE modelos_calcado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    marca VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50),
+    genero VARCHAR(20),
+    faixa_etaria VARCHAR(20),
+    preco DECIMAL(10, 2) NOT NULL,
+    descricao TEXT,
+    slug VARCHAR(255) UNIQUE,
+    destaque TINYINT(1) DEFAULT 0,
+    status TINYINT(1) DEFAULT 1,
+    peso INT NOT NULL,
+    comprimento INT NOT NULL, 
+    largura INT NOT NULL, 
+    altura INT NOT NULL, 
+    formato INT DEFAULT 1
+);
+
+CREATE TABLE variacoes_calcado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    modelo_id INT NOT NULL,
+    tamanho INT NOT NULL,
+    cor VARCHAR(50) NOT NULL,
+    estoque INT DEFAULT 0,
+    FOREIGN KEY (modelo_id) REFERENCES modelos_calcado(id) ON DELETE CASCADE
+);
+
+CREATE TABLE imagens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    variacao_id INT NOT NULL,
+    arquivo VARCHAR(255) NOT NULL,
+    FOREIGN KEY (variacao_id) REFERENCES variacoes_calcado(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valor_total DECIMAL(10, 2) NOT NULL,
+    status_pagamento VARCHAR(50) DEFAULT 'pendente',
+    metodo_pagamento VARCHAR(50),
+    psp_id VARCHAR(255),
+    logradouro_entrega VARCHAR(255) NOT NULL,
+    numero_entrega VARCHAR(20) NOT NULL,
+    bairro_entrega VARCHAR(100) NOT NULL,
+    cidade_entrega VARCHAR(100) NOT NULL,
+    uf_entrega CHAR(2) NOT NULL,
+    cep_entrega VARCHAR(9) NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
+
+CREATE TABLE pedidos_itens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    variacao_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+    FOREIGN KEY (variacao_id) REFERENCES variacoes_calcado(id)
+);
+
+-- 9. Logs de Auditoria do Admin
+CREATE TABLE logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT NOT NULL,
+    acao VARCHAR(255) NOT NULL,
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    linha_afetada_id INT,
+    tabela_afetada VARCHAR(50),
+    FOREIGN KEY (admin_id) REFERENCES admins(id)
+);
