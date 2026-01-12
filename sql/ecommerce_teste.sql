@@ -92,7 +92,6 @@ CREATE TABLE pedidos_itens (
     FOREIGN KEY (variacao_id) REFERENCES variacoes_calcado(id)
 );
 
--- 9. Logs de Auditoria do Admin
 CREATE TABLE logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT NOT NULL,
