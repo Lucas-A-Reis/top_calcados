@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
-require_once 'src/database/conecta.php';
-require_once 'src/services/pedidoServico.php';
+require_once '../src/database/conecta.php';
+require_once '../src/services/pedidoServico.php';
 
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\MercadoPagoConfig;

@@ -3,9 +3,9 @@ error_reporting(0);
 header('Content-Type: application/json');
 
 require_once 'config.php';
-require_once 'src/database/conecta.php';
-require_once 'src/services/pedidoServico.php';
-require_once 'src/helpers/funcoes_uteis.php';
+require_once '../src/database/conecta.php';
+require_once '../src/services/pedidoServico.php';
+require_once '../src/helpers/funcoes_uteis.php';
 
 use MercadoPago\Client\Payment\PaymentClient;
 
