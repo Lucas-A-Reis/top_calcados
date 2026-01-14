@@ -1,17 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f4f7f6;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 50px;
-    }
-    h1 { color: #333; margin-bottom: 30px; }
-    #paymentBrick_container {
-        width: 100%;
-        max-width: 600px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* finalizar pagamento */
+#finalizar_compra {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+#paymentBrick_container {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* cabeçalho */
+#cabecalho {
+    background-color: #551A88;
+    height: 90px;
+    display: flex;
+    align-items: center; /* Centraliza verticalmente todos os itens */
+    justify-content: space-between;
+    padding: 0 30px; /* Padding interno em vez de margens soltas */
+}
+
+#logo {
+    height: 60px;
+    /* Removido margens excessivas para usar o alinhamento do pai */
+    display: block;
+}
+
+.pesquisa {
+    display: flex;
+    align-items: center;
+    border: 2px solid #AB73DC;
+    background-color: #f9f9f9;
+    border-radius: 6px; /* Aumentado levemente para combinar com ícones modernos */
+    width: 100%;
+    max-width: 450px; /* Barra de pesquisa um pouco mais larga fica melhor */
+    height: 40px;    /* Aumentado para melhor usabilidade */
+    margin: 0 20px;  /* Espaçamento lateral para não encostar na logo/ícones */
+}
+
+.pesquisa input {
+    border: none;
+    outline: none;
+    font-size: 15px;
+    width: 100%;
+    padding: 0 15px;
+    background-color: transparent;
+}
+
+.pesquisa button {
+    background-color: #AB73DC;
+    border: none;
+    border-radius: 0 4px 4px 0; /* Arredonda apenas o canto direito */
+    cursor: pointer;
+    height: 100%; /* Ocupa a altura total da barra */
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.pesquisa button:hover {
+    background-color: #9259c2;
+}
+
+#icones {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Espaçamento fixo e elegante entre os blocos de ícones */
+}
+
+#icones div, #icones a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 12px; /* Fonte menor para legendas de ícones fica mais clean */
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+#icones div:hover, #icones a:hover {
+    opacity: 0.8;
+}
+
+/* Ajuste fino nos SVGs dos ícones */
+#icones svg {
+    margin-bottom: 4px; /* Espaço entre o desenho e o texto abaixo */
+}

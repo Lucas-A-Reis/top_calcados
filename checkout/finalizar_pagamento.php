@@ -7,13 +7,23 @@
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+    </style>
     <title>Top Calçados</title>
 </head>
 
 <body>
 
     <body>
-        <h1>Finalizar Compra - Top Calçados</h1>
+        <h1 id="finalizar_compra">Finalizar Compra - Top Calçados</h1>
 
         <div id="paymentBrick_container"></div>
 
@@ -70,7 +80,7 @@
                                                <input type="text" value="${result.qr_code}" readonly style="width:100%">`,
                                                     icon: 'info'
                                                 });
-                                             iniciarVigilancia(result.id);
+                                                iniciarVigilancia(result.id);
                                             } else {
                                                 Swal.fire('Pendente', 'Aguardando pagamento.', 'info');
                                             }
