@@ -31,30 +31,29 @@ body {
     background-color: #551A88;
     height: 90px;
     display: flex;
-    align-items: center; /* Centraliza verticalmente todos os itens */
+    align-items: center; 
     justify-content: space-between;
-    padding: 0 30px; /* Padding interno em vez de margens soltas */
+    padding: 0 30px; 
 }
 
 #logo {
     height: 60px;
-    /* Removido margens excessivas para usar o alinhamento do pai */
     display: block;
 }
 
-.pesquisa {
+#pesquisa {
     display: flex;
     align-items: center;
     border: 2px solid #AB73DC;
     background-color: #f9f9f9;
-    border-radius: 6px; /* Aumentado levemente para combinar com ícones modernos */
+    border-radius: 6px;
     width: 100%;
-    max-width: 450px; /* Barra de pesquisa um pouco mais larga fica melhor */
-    height: 40px;    /* Aumentado para melhor usabilidade */
-    margin: 0 20px;  /* Espaçamento lateral para não encostar na logo/ícones */
+    max-width: 450px;
+    height: 40px; 
+    margin: 0 20px;
 }
 
-.pesquisa input {
+#pesquisa input {
     border: none;
     outline: none;
     font-size: 15px;
@@ -63,46 +62,102 @@ body {
     background-color: transparent;
 }
 
-.pesquisa button {
+#pesquisa button {
     background-color: #AB73DC;
     border: none;
-    border-radius: 0 4px 4px 0; /* Arredonda apenas o canto direito */
+    border-radius: 0 4px 4px 0;
     cursor: pointer;
-    height: 100%; /* Ocupa a altura total da barra */
+    height: 100%;
     padding: 0 12px;
     display: flex;
     align-items: center;
     transition: background 0.2s;
 }
 
-.pesquisa button:hover {
+#pesquisa button:hover {
     background-color: #9259c2;
 }
 
 #icones {
     display: flex;
     align-items: center;
-    gap: 25px; /* Espaçamento fixo e elegante entre os blocos de ícones */
+    gap: 25px;
 }
 
-#icones div, #icones a {
+#icones div, #icones a, #icones_mobile div, #icones_mobile a, #menu {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
     text-decoration: none;
-    font-size: 12px; /* Fonte menor para legendas de ícones fica mais clean */
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
-#icones div:hover, #icones a:hover {
+#icones div:hover, #icones a:hover, #icones_mobile div:hover, #icones_mobile a:hover, #menu:hover {
     opacity: 0.8;
 }
 
-/* Ajuste fino nos SVGs dos ícones */
 #icones svg {
-    margin-bottom: 4px; /* Espaço entre o desenho e o texto abaixo */
+    margin-bottom: 4px;
+}
+
+.mobile_hide {
+    display: none;
+}
+
+#menu {
+    display:none;
+}
+
+@media (max-width: 600px) {
+    #cabecalho {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+    }
+
+    #pesquisa {
+        margin: 15px 0;
+        max-width: 100%;
+    }
+
+    .mobile_hide {
+        display: flex;
+    }
+
+    #icones {
+        display: none;
+    }
+
+    #logo_e_icones {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0px;
+    }
+
+    #menu {
+        display: block;
+    }
+
+    #icones_mobile {
+        display: flex;
+        gap: 20px;
+    }
+
+    #pesquisa {
+        margin: 15px 0px 0px 0px;
+
+    }
+
+    #logo {
+        height: 50px;
+        align-self: center;
+    }
+
 }
