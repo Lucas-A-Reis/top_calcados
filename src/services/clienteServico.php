@@ -34,4 +34,13 @@ function cadastrarCliente(PDO $pdo, Cliente $cliente) {
     }
 } 
 }
+
+function buscarClientePorEmail(PDO $pdo, $email) {
+    $sql = "SELECT * FROM clientes WHERE email = :email";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':email', $email);
+    $stmt->execute();
+    
+    return $stmt->fetch();
+}
 ?>
