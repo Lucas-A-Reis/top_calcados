@@ -31,9 +31,9 @@ body {
     background-color: #551A88;
     height: 90px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: space-between;
-    padding: 0 30px; 
+    padding: 0 30px;
 }
 
 #logo {
@@ -49,7 +49,7 @@ body {
     border-radius: 6px;
     width: 100%;
     max-width: 450px;
-    height: 40px; 
+    height: 40px;
     margin: 0 20px;
 }
 
@@ -84,7 +84,11 @@ body {
     gap: 25px;
 }
 
-#icones div, #icones a, #icones_mobile div, #icones_mobile a, #menu {
+#icones div,
+#icones a,
+#icones_mobile div,
+#icones_mobile a,
+#menu {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -97,7 +101,11 @@ body {
     transition: opacity 0.2s;
 }
 
-#icones div:hover, #icones a:hover, #icones_mobile div:hover, #icones_mobile a:hover, #menu:hover {
+#icones div:hover,
+#icones a:hover,
+#icones_mobile div:hover,
+#icones_mobile a:hover,
+#menu:hover {
     opacity: 0.8;
 }
 
@@ -110,7 +118,7 @@ body {
 }
 
 #menu {
-    display:none;
+    display: none;
 }
 
 @media (max-width: 600px) {
@@ -160,4 +168,113 @@ body {
         align-self: center;
     }
 
+}
+
+
+/* rodapé */
+
+#rodape {
+    padding: 60px;
+    background-color: #551A88;
+    color: #f9f9f9;
+}
+
+#info {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+#sobre_a_loja h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #AB73DC;
+}
+
+#sobre_a_loja ul {
+    list-style: none;
+    font-size: 14px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#sobre_a_loja ul a, #sobre_a_loja address {
+    color: #f9f9f9;
+    text-decoration: none;
+    font-style: normal;
+    transition: color 0.2s;
+}
+
+#sobre_a_loja ul a:hover {
+    color: #AB73DC;
+}
+
+#redes_sociais_etc {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+#redes_sociais_etc section p {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+
+.icon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#redes_sociais_etc a svg {
+    transition: fill 0.2s;
+    height: 30px;
+    width: auto;
+}
+
+#redes_sociais_etc a svg:hover {
+    stroke: #AB73DC;
+    opacity: 0.7;
+}
+
+#pagamento svg, #redes_sociais_etc section img {
+    background-color: #f9f9f9;
+    padding: 5px;
+    border-radius: 4px;
+    height: 36px;
+    width: auto;
+    transition: transform 0.2s;
+}
+
+#pagamento svg:hover {
+    transform: translateY(-3px);
+}
+
+#creditos {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#github svg {
+    fill: white;
+    transition: fill 0.2s;
+}
+
+#github:hover svg {
+    fill: #AB73DC;
 }
