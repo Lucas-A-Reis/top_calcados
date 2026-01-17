@@ -13,6 +13,7 @@ require_once 'src/helpers/funcoes_uteis.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -77,6 +78,34 @@ require_once 'src/helpers/funcoes_uteis.php';
                     <label for="senha">Senha</label>
                     <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura" required>
                 </div>
+
+                <div style="margin-bottom: 10px;" class="g-recaptcha"
+                    data-sitekey="6Lc5y00sAAAAAMd6mkoAdncVd3Tihd1SYT8VGgnV"></div>
+
+                <?php if (isset($_GET['captcha_vazio'])): ?>
+                    <div class="alerta-erro">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-circle-x-icon lucide-circle-x">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m15 9-6 6" />
+                            <path d="m9 9 6 6" />
+                        </svg>
+                        Complete o captcha antes de finalizar seu cadastro.
+                    </div>
+                    <?php endif; ?>
+                <?php if (isset($_GET['erro_captcha'])): ?>
+                    <div class="alerta-erro">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-circle-x-icon lucide-circle-x">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m15 9-6 6" />
+                            <path d="m9 9 6 6" />
+                        </svg>
+                        Houve um erro ao verificar o captcha, tente novamente.
+                    </div>
+                <?php endif; ?> 
 
                 <button type="submit" class="btn_acessar">Finalizar Cadastro</button>
             </form>
