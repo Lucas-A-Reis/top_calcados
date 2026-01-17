@@ -338,21 +338,6 @@ body {
 
 }
 
-.alerta-erro {
-    background-color: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #b91c1c;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    animation: shake 0.5s;
-    margin-top: 10px;
-}
-
 @keyframes shake {
 
     0%,
@@ -390,3 +375,32 @@ body {
         border-radius: 2px;
     }
 }
+
+/* Alertas */
+
+.alerta-sucesso {
+    background-color: #dcfce7;
+    border: 1px solid #22c55e; 
+    color: #166534;           
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.alerta-erro {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: shake 0.5s;
+    margin-top: 10px;
+}
+
