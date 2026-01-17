@@ -17,9 +17,7 @@ require_once 'src/helpers/funcoes_uteis.php';
 </head>
 
 <body>
-    <header id="login_cabecalho" style="background-color: #551A88; width: 100%;">
-        <img src="media/img/logo.webp" alt="logo Top Calçados" id="top_calcados_logo">
-    </header>
+    <?php include_once 'includes/cabecalho_simples.php'; ?>
     <main id="login">
         <div id="entrar">
             <form id="form_login" action="processar_login.php" method="POST">
@@ -50,6 +48,9 @@ require_once 'src/helpers/funcoes_uteis.php';
                     E-mail ou senha inválidos.
                 </div>
             <?php endif; ?>
+            <div style="margin-top: 15px; text-align: center; font-size: 14px;">
+                <p>Esqueceu sua senha? <a href="recuperar_senha.php">Clique aqui!</a></p>
+            </div>
         </div>
         <div class="linha"></div>
         <div id="cadastro">

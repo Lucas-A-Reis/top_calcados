@@ -101,3 +101,14 @@ CREATE TABLE logs (
     tabela_afetada VARCHAR(50),
     FOREIGN KEY (admin_id) REFERENCES admins(id)
 );
+
+CREATE TABLE recuperacao_senhas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    data_expiracao DATETIME NOT NULL,
+    usado TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX (email),
+    INDEX (token)
+);
