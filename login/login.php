@@ -1,7 +1,7 @@
 <?php
-require_once 'checkout/config.php';
-require_once 'src/database/conecta.php';
-require_once 'src/helpers/funcoes_uteis.php';
+require_once '../checkout/config.php';
+require_once '../src/database/conecta.php';
+require_once '../src/helpers/funcoes_uteis.php';
 ?>
 
 
@@ -12,12 +12,12 @@ require_once 'src/helpers/funcoes_uteis.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
-    <?php include_once 'includes/cabecalho_simples.php'; ?>
+    <?php include_once '../includes/cabecalho_simples.php'; ?>
     <main id="login">
         <div id="entrar">
             <form id="form_login" action="processar_login.php" method="POST">
@@ -36,6 +36,17 @@ require_once 'src/helpers/funcoes_uteis.php';
                 <button type="submit" class="btn_acessar">Entrar</button>
 
             </form>
+            <?php if (isset($_GET['status']) && $_GET['status'] === 'senha_alterada'): ?>
+                <div style = "margin-top: 20px" class="alerta-sucesso">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-circle-check-icon lucide-circle-check">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+                    Sua senha foi alterada com sucesso. Faça login com sua nova senha.
+                </div>
+            <?php endif; ?>
             <?php if (isset($_GET['erro'])): ?>
                 <div class="alerta-erro">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -54,7 +65,7 @@ require_once 'src/helpers/funcoes_uteis.php';
         </div>
         <div class="linha"></div>
         <div id="cadastro">
-            <form id="form_login" action="processar_cadastro.php" method="POST">
+            <form id="form_login" action="processar_cadastro.php?front=login.php" method="POST">
                 <h2>Crie sua conta</h2>
                 <p style="text-align: center; font-size: 13px; margin-bottom: 20px; color: #666;">
                     Preencha os campos abaixo para ser cliente da Top Calçados.
@@ -80,33 +91,7 @@ require_once 'src/helpers/funcoes_uteis.php';
                     <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura" required>
                 </div>
 
-                <div style="margin-bottom: 10px;" class="g-recaptcha"
-                    data-sitekey="6Lc5y00sAAAAAMd6mkoAdncVd3Tihd1SYT8VGgnV"></div>
-
-                <?php if (isset($_GET['captcha_vazio'])): ?>
-                    <div class="alerta-erro">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-circle-x-icon lucide-circle-x">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m15 9-6 6" />
-                            <path d="m9 9 6 6" />
-                        </svg>
-                        Complete o captcha antes de finalizar seu cadastro.
-                    </div>
-                    <?php endif; ?>
-                <?php if (isset($_GET['erro_captcha'])): ?>
-                    <div class="alerta-erro">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-circle-x-icon lucide-circle-x">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m15 9-6 6" />
-                            <path d="m9 9 6 6" />
-                        </svg>
-                        Houve um erro ao verificar o captcha, tente novamente.
-                    </div>
-                <?php endif; ?> 
+                <?php include '../includes/captcha.php'; ?>
 
                 <button type="submit" class="btn_acessar">Finalizar Cadastro</button>
             </form>
