@@ -30,7 +30,7 @@ function inserirModelo(PDO $pdo, Modelo $modelo) {
             ':formato'      => $modelo->getFormato() ?? 1
         ]);
 
-        return $pdo->lastInsertId();
+        return true;
 
     } catch (PDOException $e) {
         return false;

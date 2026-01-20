@@ -31,7 +31,7 @@ if (!empty($token)) {
 </head>
 <body>
     <?php include '../includes/cabecalho_simples.php'; ?>
-    <main id="login" style="background-color: f9f9f9; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 400px; margin: 50px auto;">
+    <main class="login" style="background-color: f9f9f9; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 400px; margin: 50px auto;">
         <?php if ($exibirFormulario): ?>
             <form id="form_login" action="atualizar_senha.php" method="POST">
                 <h2>Crie sua nova senha</h2>

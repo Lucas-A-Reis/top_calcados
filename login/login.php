@@ -18,7 +18,7 @@ require_once '../src/helpers/funcoes_uteis.php';
 
 <body>
     <?php include_once '../includes/cabecalho_simples.php'; ?>
-    <main id="login">
+    <main class="login">
         <div id="entrar">
             <form id="form_login" action="processar_login.php" method="POST">
                 <h2>Já sou cadastrado</h2>

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body style="display: flex; justify-content: center; background-color: #f0f0f0;">
-    <main style="box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 30px; width: 400px; border-radius: 10px; background-color: #f9f9f9;" id="login">
+    <main style="box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 30px; width: 400px; border-radius: 10px; background-color: #f9f9f9;" class="login">
         <form id="form_login" method="POST">
             <h2>Verificação de 2 Etapas</h2>
             <p>Enviamos um código de 6 dígitos para o seu e-mail cadastrado.</p>

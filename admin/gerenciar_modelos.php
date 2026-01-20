@@ -8,23 +8,7 @@ require_once '../src/helpers/funcoes_uteis.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Validação dos campos obrigatórios
-    $camposObrigatorios = [
-        'marca' => 'Marca',
-        'preco' => 'Preço',
-        'peso' => 'Peso',
-        'comprimento' => 'Comprimento',
-        'largura' => 'Largura',
-        'altura' => 'Altura'
-    ];
-
     $erros = [];
-
-    foreach ($camposObrigatorios as $campo => $nomeExibicao) {
-        if (!isset($_POST[$campo]) || trim($_POST[$campo]) === "") {
-            $erros[] = "O campo <strong>$nomeExibicao</strong> é obrigatório.";
-        }
-    }
 
     // Sanitização
     $marca = sanitizar($_POST['marca'] ?? '', 'string');
@@ -78,8 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formato = (is_numeric($formato) && $formato > 0) ? (int) $formato : 1;
 
     // Gerar slug
-    $marca = $_POST['marca'];
-    $tipo = $_POST['tipo'];
     $textoParaSlug = $marca . " " . $tipo;
     $slug = gerarSlug($textoParaSlug);
     $slugFinal = garantirSlugUnico($pdo, $slug);
@@ -88,25 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modelo = new Modelo($marca, $tipo, $genero, $faixa_etaria, $preco, $descricao, $slugFinal, $destaque, $status, $peso, $comprimento, $largura, $altura, $formato);
 
     // Inserir no banco
-    $idModeloGerado = inserirModelo($pdo, $modelo);
 
-    if ($idModeloGerado) {
-        echo "Modelo cadastrado com sucesso! ID: " . $idModeloGerado;
-    } else {
-        $erros[] = "Erro ao salvar o modelo no banco de dados. Verifique os logs.";
+    $flag = false;
+
+    if (empty($erros)) {
+
+        $flag = inserirModelo($pdo, $modelo);
+
     }
 
-    if (count($erros) > 0) {
-        echo "<h3>Erros detectados:</h3><ul>";
-        foreach ($erros as $erro) {
-            echo "<li>$erro</li></ul>";
-        }
-    }
-
-    if ($idModeloGerado) {
+    if ($flag) {
         header("Location: gerenciar_modelos.php?sucesso=1");
         exit();
+    } else {
+        $erros[] = "Erro ao salvar o modelo no banco de dados, verifique os dados e tente novamente.";
     }
+
 }
 ?>
 
@@ -120,45 +99,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Top Calçados - Gerenciar Modelos</title>
 </head>
 
-<body>
+<body style="background-color: #f4f7f6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;">
+    <form class="form" action="gerenciar_modelos.php" method="POST">
+        <div class="grid">
+            <h3>Informações Básicas</h3>
+            <input type="text" name="marca" placeholder="Marca (Ex: Nike)" required>
+            <input type="text" name="tipo" placeholder="Tipo/Modelo (Ex: Air Max)">
+            <input type="number" name="preco" step="0.01" placeholder="Preço (Ex: 299.90)" required>
+        </div>
 
-    <?php if (isset($_GET['sucesso'])): ?>
-        <p class="alerta-sucesso">Modelo cadastrado com sucesso!</p>
-    <?php endif; ?>
+        <div class="grid">
+            <h3>Logística (Medidas)</h3>
+            <input type="number" name="peso" placeholder="Peso em gramas" required>
+            <input type="number" name="comprimento" placeholder="Comprimento (cm)" required>
+            <input type="number" name="largura" placeholder="Largura (cm)" required>
+            <input type="number" name="altura" placeholder="Altura (cm)" required>
+            <input type="number" name="formato" value="1" placeholder="Formato da embalagem">
+        </div>
 
-    <form action="gerenciar_modelos.php" method="POST">
-        <h3>Informações Básicas</h3>
-        <input type="text" name="marca" placeholder="Marca (Ex: Nike)" required>
-        <input type="text" name="tipo" placeholder="Tipo/Modelo (Ex: Air Max)">
-        <input type="number" name="preco" step="0.01" placeholder="Preço (Ex: 299.90)" required>
+        <div class="grid">
+            <h3>Público e Categorias</h3>
+            <input type="text" name="genero" placeholder="Gênero (Ex: Masculino)">
+            <input type="text" name="faixa_etaria" placeholder="Faixa Etária (Ex: Adulto)">
+        </div>
 
-        <h3>Logística (Medidas)</h3>
-        <input type="number" name="peso" placeholder="Peso em gramas" required>
-        <input type="number" name="comprimento" placeholder="Comprimento (cm)" required>
-        <input type="number" name="largura" placeholder="Largura (cm)" required>
-        <input type="number" name="altura" placeholder="Altura (cm)" required>
+        <div class="grid">
+            <h3>Descrição do Produto</h3>
+            <textarea name="descricao" placeholder="Breve descrição do calçado"></textarea>
+        </div>
 
-        <h3>Público e Categorias</h3>
-        <input type="text" name="genero" placeholder="Gênero (Ex: Masculino)">
-        <input type="text" name="faixa_etaria" placeholder="Faixa Etária (Ex: Adulto)">
+        <div class="grid">
+            <h3>Configurações de Exibição</h3>
 
-        <h3>Descrição do Produto</h3>
-        <textarea name="descricao" placeholder="Breve descrição do calçado"></textarea>
+            <select name="status">
+                <option value="1">Ativo</option>
+                <option value="0">Inativo</option>
+            </select>
 
-        <h3>Configurações de Exibição</h3>
-        <label>
-            <input type="checkbox" name="destaque" value="1"> Colocar em Destaque
-        </label>
+            <label>
+                <input type="checkbox" name="destaque" value="1"> Colocar em Destaque
+            </label>
 
-        <select name="status">
-            <option value="1">Ativo</option>
-            <option value="0">Inativo</option>
-        </select>
+        </div>
 
-        <input type="number" name="formato" value="1" placeholder="Formato da embalagem">
+        <br>
 
-        <button type="submit">Cadastrar Modelo</button>
+        <button class="btn_acessar" type="submit">Cadastrar Modelo</button>
+
+        <?php if (isset($_GET['sucesso'])): ?>
+            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-sucesso">Modelo cadastrado com sucesso!
+            </p>
+        <?php endif; ?>
+
+        <?php if (!empty($erros)): ?>
+            <div class="alerta-erro" style="margin-top: 20px;">
+                <ul style="padding-left: 20px; margin: 0;">
+                    <strong>Erros detectados:</strong>
+                    <?php foreach ($erros as $erro): ?>
+                        <li><?php echo $erro; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
     </form>
+
+
+    <script>
+
+        const mensagem = document.getElementsByClassName('alerta-sucesso');
+
+        if (mensagem.length > 0) {
+            setTimeout(() => {
+                mensagem[0].style.opacity = '0';
+                setTimeout(() => {
+                    mensagem[0].remove();
+                }, 1000);
+            }, 3000);
+        }
+
+
+        if (window.history.replaceState) {
+            const novaUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, novaUrl);
+        }
+
+    </script>
 </body>
 
 </html>
