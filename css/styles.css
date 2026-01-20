@@ -404,3 +404,56 @@ body {
     margin-top: 10px;
 }
 
+/* Admin */
+
+#menu_admin {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 10px 0;
+    height: 80vh;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+#menu_admin ul {
+    list-style: none;
+    display: flex;
+    padding: 0px 100px;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 10px;
+    justify-content: space-around;
+    font-size: 18px;
+    
+}
+
+#titulo_painel {
+    color: #551A88;
+    margin: 20px;
+    height: 12%vh;
+}
+
+#menu_admin ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#menu_admin ul li {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+
+#menu_admin ul li:hover {
+    background-color: #AB73DC;
+}
