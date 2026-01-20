@@ -454,6 +454,13 @@ body {
     border-radius: 10px;
 }
 
-#menu_admin ul li:hover {
-    background-color: #AB73DC;
+#menu_admin ul li a {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#menu_admin ul li a:hover {
+    color: rgb(255, 255, 255, 0.7); 
+    background-color: #44027E;
 }
