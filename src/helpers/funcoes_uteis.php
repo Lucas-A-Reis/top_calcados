@@ -133,3 +133,13 @@ function garantirSlugUnico(PDO $pdo, $slugOriginal) {
 
     return $slugFinal;
 }
+
+function temPalavraEmComum(string $string, string $string2): bool {
+
+    $palavras = explode(' ', $string);
+    $palavras2 = explode(' ', $string2);
+
+    $comuns = array_intersect($palavras, $palavras2);
+
+    return count($comuns) > 0;
+}

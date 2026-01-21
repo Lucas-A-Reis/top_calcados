@@ -102,11 +102,7 @@ $lista_de_modelos = listarModelos($pdo);
     <title>Top Calçados - Gerenciar Modelos</title>
 </head>
 
-<body style="background-color: #f4f7f6;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;">
+<body class="admin">
 
     <?php include_once '../includes/cabecalho_admin.php'; ?>
 
