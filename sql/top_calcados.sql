@@ -112,3 +112,5 @@ CREATE TABLE recuperacao_senhas (
     INDEX (email),
     INDEX (token)
 );
+
+ALTER TABLE variacoes_calcado ADD COLUMN cor_hex VARCHAR(7) AFTER cor;

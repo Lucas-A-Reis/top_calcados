@@ -143,3 +143,28 @@ function temPalavraEmComum(string $string, string $string2): bool {
 
     return count($comuns) > 0;
 }
+
+function upload(array $arquivo) {
+    
+    if ($arquivo['error'] !== UPLOAD_ERR_OK) {
+        return false;
+    }
+
+    if ($arquivo['size'] <= 0) {
+        return false;
+    }
+
+    $extensao = strtolower(pathinfo($arquivo['name'], PATHINFO_EXTENSION));
+    $extensoesPermitidas = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'];
+    if (!in_array($extensao, $extensoesPermitidas)) {
+        return false; 
+    }
+
+    $nome = md5(uniqid(rand(), true));
+    $nome_arquivo = $nome . "." . $extensao;
+
+    if (move_uploaded_file($arquivo['tmp_name'],  "../media/img/calcados/" . $nome_arquivo)) {
+        return $nome_arquivo;
+    } 
+        return false;
+}

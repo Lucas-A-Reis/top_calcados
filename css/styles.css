@@ -630,3 +630,9 @@ form textarea {
     align-items: center;
 }
 
+.campos-cor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
