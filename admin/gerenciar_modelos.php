@@ -87,6 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }
+
+$lista_de_modelos = listarModelos($pdo);
+
 ?>
 
 <!DOCTYPE html>
@@ -103,8 +106,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 40px;">
+    align-items: center;">
+
+    <?php include_once '../includes/cabecalho_admin.php'; ?>
+
+    <h2 style="margin-top: 40px;">Cadastrar um modelo</h2>
+
     <form class="form" action="gerenciar_modelos.php" method="POST">
         <div class="grid">
             <h3>Informações Básicas</h3>
@@ -169,6 +176,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </form>
 
+    <hr>
+
+    <h2 style="margin-top: 40px;">Modelos Cadastrados</h2>
+
+    <?php $listaModelos = listarModelos($pdo); ?>
+
+    <div class="container-tabela">
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca / Tipo</th>
+                    <th>Preço</th>
+                    <th>Gênero/Idade</th>
+                    <th>Destaque</th>
+                    <th>Status</th>
+                    <th>Dimensões (CxLxA)</th>
+                    <th>Peso</th>
+                    <th>Slug</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($listaModelos as $m): ?>
+                    <tr>
+                        <td><?php echo $m->getId(); ?></td>
+                        <td><strong><?php echo $m->getMarca(); ?></strong> <?php echo $m->getTipo(); ?></td>
+                        <td>R$ <?php echo number_format($m->getPreco(), 2, ',', '.'); ?></td>
+                        <td><?php echo ($m->getGenero() ?? '-') . " / " . ($m->getFaixaEtaria() ?? '-'); ?></td>
+                        <td><?php echo $m->getDestaque() ? '⭐ Sim' : 'Não'; ?></td>
+                        <td>
+                            <span class="<?php echo $m->getStatus() ? 'status-ativo' : 'status-inativo'; ?>">
+                                <?php echo $m->getStatus() ? 'Ativo' : 'Inativo'; ?>
+                            </span>
+                        </td>
+                        <td><?php echo $m->getComprimento() . "x" . $m->getLargura() . "x" . $m->getAltura(); ?> cm</td>
+                        <td><?php echo $m->getPeso(); ?>g</td>
+                        <td><small><?php echo $m->getSlug(); ?></small></td>
+                        <td>
+                            <a href="editar_modelos.php?id=<?php echo $m->getId(); ?>" class="btn-editar">Editar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
     <script>
 

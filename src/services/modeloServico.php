@@ -36,3 +36,45 @@ function inserirModelo(PDO $pdo, Modelo $modelo) {
         return false;
     }
 }
+
+function listarModelos(PDO $pdo): array {
+    $modelos = [];
+    
+    try {
+
+        $sql = "SELECT * FROM modelos_calcado ORDER BY id DESC";
+        $stmt = $pdo->query($sql);
+        
+        $resultados = $stmt->fetchAll();
+        
+        foreach ($resultados as $resultado) {
+            
+            $modelo = new Modelo(
+                $resultado['marca'],
+                $resultado['tipo'],
+                $resultado['genero'],
+                $resultado['faixa_etaria'],
+                (float)$resultado['preco'],
+                $resultado['descricao'],
+                $resultado['slug'],
+                (int)$resultado['destaque'],
+                (int)$resultado['status'],
+                (int)$resultado['peso'],
+                (int)$resultado['comprimento'],
+                (int)$resultado['largura'],
+                (int)$resultado['altura'],
+                (int)$resultado['formato']
+            );
+            
+            
+            $modelo->setId($resultado['id']);
+            
+            $modelos[] = $modelo;
+        }
+        
+    } catch (PDOException $e) {
+        error_log("Erro ao listar modelos: " . $e->getMessage());
+    }
+    
+    return $modelos;
+}

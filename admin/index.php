@@ -18,14 +18,13 @@
     </h1>
     <nav id="menu_admin">
         <ul>
-            <li><a href="gerenciar_modelos.php">Gerenciar Modelos de Calçados</a></li>
-            <li><a href="gerenciar_variacoes.php">Gerenciar Variações de Calçados</a></li>
-            <li><a href="gerenciar_clientes.php">Gerenciar Clientes</a></li>
-            <li><a href="gerenciar_pedidos.php">Gerenciar Pedidos</a></li>
+            <li><a href="gerenciar_modelos.php">Modelos</a></li>
+            <li><a href="gerenciar_variacoes.php">Variações</a></li>
+            <li><a href="clientes.php">Clientes</a></li>
+            <li><a href="pedidos.php">Pedidos</a></li>
             <li><a href="historico.php">Histórico</a></li>
             <li><a href="logout.php">Sair</a></li>
         </ul>
-
     </nav>
 </body>
 
