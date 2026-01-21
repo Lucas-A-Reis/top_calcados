@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloEditado->setId($id);
 
     if (atualizarModelo($pdo, $modeloEditado)) {
-        header("Location: gerenciar_modelos.php?sucesso=editado");
+        header("Location: gerenciar_modelos.php?sucesso=2");
         exit();
     } else {
-        $erros[] = "Erro ao atualizar os dados no banco.";
+        header("Location: gerenciar_modelos.php?erro=1");
     }
 }
 
@@ -67,7 +67,7 @@ if (!$modelo) {
                 value="<?php echo htmlspecialchars($modelo->getMarca()); ?>" required>
 
             <input type="text" name="tipo" placeholder="Tipo/Modelo (Ex: Air Max)"
-                value="<?php echo htmlspecialchars($modelo->getTipo() ?? ''); ?>">
+                value="<?php echo htmlspecialchars($modelo->getTipo() ?? ''); ?>" required>
 
             <input type="number" name="preco" step="0.01" placeholder="Preço (Ex:299,90)" value="<?php echo $modelo->getPreco(); ?>"
                 required>
@@ -87,17 +87,23 @@ if (!$modelo) {
                 required>
 
             <input type="number" name="formato" value="<?php echo $modelo->getFormato(); ?>"
-                placeholder="Formato da embalagem">
+                placeholder="Formato da embalagem" required>
         </div>
 
         <div class="grid">
             <h3>Público</h3>
 
-            <input type="text" name="genero" placeholder="Gênero (Ex: Masculino)"
-                value="<?php echo htmlspecialchars($modelo->getGenero() ?? ''); ?>">
-
-            <input type="text" name="faixa_etaria" placeholder="Faixa Etária (Ex: Infantil)"
-                value="<?php echo htmlspecialchars($modelo->getFaixaEtaria() ?? ''); ?>">
+            <h3>Público</h3>
+            <select name="genero" value="<?php echo htmlspecialchars($modelo->getGenero() ?? ''); ?>">
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Unissex">Unissex</option>
+            </select>
+            <select name="faixa_etaria" value="<?php echo htmlspecialchars($modelo->getFaixaEtaria() ?? ''); ?>">
+                <option value="Infantil">Infantil</option>
+                <option value="Adulto">Adulto</option>
+            </select>
+        </div>
         </div>
 
         <div class="grid">

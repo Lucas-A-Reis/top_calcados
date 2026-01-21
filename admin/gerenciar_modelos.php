@@ -112,7 +112,7 @@ $lista_de_modelos = listarModelos($pdo);
         <div class="grid">
             <h3>Informações Básicas</h3>
             <input type="text" name="marca" placeholder="Marca (Ex: Nike)" required>
-            <input type="text" name="tipo" placeholder="Tipo/Modelo (Ex: Air Max)">
+            <input type="text" name="tipo" placeholder="Tipo/Modelo (Ex: Air Max)" required>
             <input type="number" name="preco" step="0.01" placeholder="Preço (Ex: 299.90)" required>
         </div>
 
@@ -122,13 +122,20 @@ $lista_de_modelos = listarModelos($pdo);
             <input type="number" name="comprimento" placeholder="Comprimento (cm)" required>
             <input type="number" name="largura" placeholder="Largura (cm)" required>
             <input type="number" name="altura" placeholder="Altura (cm)" required>
-            <input type="number" name="formato" value="1" placeholder="Formato da embalagem">
+            <input type="number" name="formato" value="1" placeholder="Formato da embalagem" required>
         </div>
 
         <div class="grid">
-            <h3>Público e Categorias</h3>
-            <input type="text" name="genero" placeholder="Gênero (Ex: Masculino)">
-            <input type="text" name="faixa_etaria" placeholder="Faixa Etária (Ex: Adulto)">
+            <h3>Público</h3>
+            <select name="genero">
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Unissex">Unissex</option>
+            </select>
+            <select name="faixa_etaria">
+                <option value="Infantil">Infantil</option>
+                <option value="Adulto">Adulto</option>
+            </select>
         </div>
 
         <div class="grid">
@@ -155,8 +162,17 @@ $lista_de_modelos = listarModelos($pdo);
         <button class="btn_acessar" type="submit">Cadastrar Modelo</button>
 
         <?php if (isset($_GET['sucesso'])): ?>
-            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-sucesso">Modelo cadastrado com sucesso!
+            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-sucesso sumir">
+                <?php if ($_GET['sucesso'] == 1) {
+                    echo "Modelo cadastrado com sucesso!";
+                } elseif ($_GET['sucesso'] == 2) {
+                    echo "Modelo editado com sucesso!";
+                } ?>
             </p>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['erro'])): ?>
+            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir"> Erro ao editar o modelo.</p>
         <?php endif; ?>
 
         <?php if (!empty($erros)): ?>
@@ -221,7 +237,7 @@ $lista_de_modelos = listarModelos($pdo);
 
     <script>
 
-        const mensagem = document.getElementsByClassName('alerta-sucesso');
+        const mensagem = document.getElementsByClassName('sumir');
 
         if (mensagem.length > 0) {
             setTimeout(() => {
