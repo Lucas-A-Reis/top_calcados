@@ -655,3 +655,75 @@ form textarea {
     color: #551A88;
     margin-top: 40px;
 }
+
+.campo-imagem-editar {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    gap: 20px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.campo-imagem-editar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-color: #551A88; 
+}
+
+.campo-imagem-editar img {
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid #fff;
+}
+
+.campo-imagem-editar input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.campo-imagem-editar label {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #AB73DC;
+    color: white;
+    border-radius: 5px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.imagens-editar {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.container-imagem-editar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: 700px) {
+    .campo-imagem-editar {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center;
+    }
+    .campo-imagem-editar img {
+        margin: 0 auto;
+    }
+}

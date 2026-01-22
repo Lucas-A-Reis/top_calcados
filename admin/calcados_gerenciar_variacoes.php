@@ -40,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (empty($erros)) {
 
-        echo "chegou aqui".$id;
         $variacao = new Variacao($id, $tamanho, $cor_hex, $cor);
 
         if (inserirVariacao($pdo, $variacao)) {

@@ -46,3 +46,24 @@ function buscarVariacaoPorId(PDO $pdo, int $id): ?Variacao {
         return null;
     }
 }
+
+function atualizarVariacao(PDO $pdo, Variacao $variacao) {
+    try {
+        $sql = "UPDATE variacoes_calcado 
+                SET tamanho = :tamanho, 
+                    cor_hex = :cor_hex, 
+                    cor = :cor 
+                WHERE id = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':tamanho', $variacao->getTamanho(), PDO::PARAM_INT);
+        $stmt->bindValue(':cor_hex', $variacao->getCorHex(), PDO::PARAM_STR);
+        $stmt->bindValue(':cor', $variacao->getCor(), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $variacao->getId(), PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erro ao atualizar variação: " . $e->getMessage());
+        return false;
+    }
+}

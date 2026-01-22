@@ -108,7 +108,7 @@ $lista_de_modelos = listarModelos($pdo);
 
     <h2>Cadastrar um modelo</h2>
 
-    <form class="form" action="gerenciar_modelos.php" method="POST">
+    <form class="form" action="calcados_gerenciar_modelos.php" method="POST">
         <div class="grid">
             <h3>Informações Básicas</h3>
             <input type="text" name="marca" placeholder="Marca (Ex: Nike)" required>

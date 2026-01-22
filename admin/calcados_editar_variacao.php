@@ -18,7 +18,6 @@ $variacao = buscarVariacaoPorId($pdo, $id);
 
 $imagens = buscarImagensPorVariacaoId($pdo, $id);
 
-
 ?>
 
 <!DOCTYPE html>
@@ -31,40 +30,87 @@ $imagens = buscarImagensPorVariacaoId($pdo, $id);
     <title>Top Calçados - Editar Variação</title>
 </head>
 
-<body>
+<body class="admin">
     <?php include '../includes/cabecalho_admin.php'; ?>
 
     <h2>Editar Variação</h2>
 
-    <form class="form" action="editar_variacao.php" method="POST" enctype="multipart/form-data">
+    <form class="form" action="calcados_editar_variacao.php" method="POST" enctype="multipart/form-data">
+
         <div class="grid">
             <h3>Tamanho</h3>
             <input type="number" name="tamanho" value="<?php echo htmlspecialchars($variacao->getTamanho()); ?>"
                 required>
+        </div>
 
-            <div class="grid">
-                <h3>Cor</h3>
-                <section class="campos-cor">
-                    <input type="color" name="cor_hex" value="#551A88" required>
-                    <input type="text" name="cor" placeholder="Nome da cor (ex: Azul Royal)" required>
-                </section>
-            </div>
+        <div class="grid">
+            <h3>Cor</h3>
+            <section class="campos-cor">
+                <input type="color" name="cor_hex" value="#551A88" required>
+                <input type="text" name="cor" placeholder="Nome da cor (ex: Azul Royal)" required>
+            </section>
+        </div>
 
-            <div class="grid">
-                <h3>Imagens</h3>
-                <?php foreach ($imagens as $index => $imagem): ?>
-                    <div>
-                        <img src="../media/img/calcados/<?php echo htmlspecialchars($imagem->getCaminhoArquivo()); ?>"  width="100">
-                        <label for="imagem<?php echo $index + 1; ?>">Alterar imagem <?php echo $index + 1; ?>:</label>
-                        <input type="file" name="imagem<?php echo $index + 1; ?>"
+        <h3 style="margin-bottom: 40px;">Imagens</h3>
+        <div class="imagens-editar">
+            <?php foreach ($imagens as $index => $imagem): ?>
+                <div class="campo-imagem-editar">
+                    <div class="container-imagem-editar">
+                        <img class="preview-img" src="../media/img/calcados/<?php echo htmlspecialchars($imagem->getCaminhoArquivo()); ?>"
+                            width="100">
+
+                        <input type="file" name="imagem<?php echo $index + 1; ?>" class="input-img" id="imagem<?php echo $index + 1; ?>"
                             accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
-                    </div>
-                <?php endforeach; ?>
-            </div>
 
-            <?php include '../includes/alerta_de_erro.php'; ?>
+                        <label for="imagem<?php echo $index + 1; ?>">
+                            Trocar Imagem
+                        </label>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <?php include '../includes/alerta_de_erro.php'; ?>
 
     </form>
+
+    <form class="form" action="">
+        <h3 style="margin-bottom: 40px;">Adicionar mais Imagens</h3>
+        <?php for ($i = count($imagens); $i < 3; $i++): ?>
+            <div class="campo-imagem-editar">
+                <div class="container-imagem-editar">
+                    <img class="preview-img" src="../media/img/sem_imagem.png" width="100">
+
+                    <input type="file" name="imagem<?php echo $i + 1; ?>" class="input-img" id="imagem<?php echo $i + 1; ?>"
+                        accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
+
+                    <label for="imagem<?php echo $i + 1; ?>">
+                        Adicionar Imagem
+                    </label>
+                </div>
+            </div>
+        <?php endfor; ?>
+    </form>
+
+<script>
+    document.querySelectorAll('.input-img').forEach(input => {
+    input.addEventListener('change', function() {
+
+        const arquivo = this.files[0];
+        const previewImg = this.closest('.container-imagem-editar').querySelector('.preview-img');
+
+        if (arquivo) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+            }
+
+            reader.readAsDataURL(arquivo);
+        }
+    });
+})
+</script>
 </body>
 
 </html>

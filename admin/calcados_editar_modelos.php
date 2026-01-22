@@ -57,7 +57,7 @@ if (!$modelo) {
 
 <body class="admin">
     <?php include_once '../includes/cabecalho_admin.php'; ?>
-    <form style="align-self: center;" class="form" action="editar_modelos.php?id=<?php echo $modelo->getId(); ?>"
+    <form style="align-self: center;" class="form" action="calcados_editar_modelos.php?id=<?php echo $modelo->getId(); ?>"
         method="POST">
         <input type="hidden" name="id" value="<?php echo $modelo->getId(); ?>">
 
