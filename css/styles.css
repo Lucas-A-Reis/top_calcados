@@ -636,3 +636,7 @@ form textarea {
     gap: 10px;
 }
 
+.admin h2 {
+    color: #551A88;
+    margin-top: 40px;
+}

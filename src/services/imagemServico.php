@@ -18,3 +18,27 @@ function inserirImagem($pdo, Imagem $imagem) {
         return false;
     }
 }
+
+function buscarImagensPorVariacaoId(PDO $pdo, int $variacao_id): array {
+    try {
+        $sql = "SELECT * FROM imagens WHERE variacao_id = :variacao_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':variacao_id', $variacao_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $imagens = [];
+        while ($linha = $stmt->fetch()) {
+            $imagens[] = new Imagem(
+                $linha['variacao_id'],
+                $linha['arquivo'],
+                $linha['id']
+            );
+        }
+
+        return $imagens;
+
+    } catch (PDOException $e) {
+        error_log("Erro ao buscar imagens: " . $e->getMessage());
+        return [];
+    }
+}

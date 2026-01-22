@@ -19,3 +19,30 @@ function inserirVariacao(PDO $pdo, Variacao $variacao) {
         return false;
     }
 }
+
+function buscarVariacaoPorId(PDO $pdo, int $id): ?Variacao {
+    try {
+        $sql = "SELECT * FROM variacoes_calcado WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $linha = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($linha) {
+            return new Variacao(
+                $linha['modelo_id'],
+                $linha['tamanho'],
+                $linha['cor_hex'],
+                $linha['cor'],
+                $linha['id']
+            );
+        } else {
+            return null;
+        }
+
+    } catch (PDOException $e) {
+        error_log("Erro ao buscar variação: " . $e->getMessage());
+        return null;
+    }
+}

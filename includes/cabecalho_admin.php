@@ -9,7 +9,7 @@
             <?php
             $links = [
                 'gerenciar_modelos.php' => 'Modelos',
-                'gerenciar_variacoes.php' => 'Variações',
+                'gerenciar_variacoes.php' => 'Variacoes',
                 'clientes.php' => 'Clientes',
                 'pedidos.php' => 'Pedidos',
                 'historico.php' => 'Histórico'

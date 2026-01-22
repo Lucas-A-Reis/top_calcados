@@ -106,7 +106,7 @@ $lista_de_modelos = listarModelos($pdo);
 
     <?php include_once '../includes/cabecalho_admin.php'; ?>
 
-    <h2 style="margin-top: 40px;">Cadastrar um modelo</h2>
+    <h2>Cadastrar um modelo</h2>
 
     <form class="form" action="gerenciar_modelos.php" method="POST">
         <div class="grid">
@@ -161,30 +161,23 @@ $lista_de_modelos = listarModelos($pdo);
 
         <button class="btn_acessar" type="submit">Cadastrar Modelo</button>
 
+        <?php $nome = "Modelo"; ?>
+
         <?php if (isset($_GET['sucesso'])): ?>
             <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-sucesso sumir">
                 <?php if ($_GET['sucesso'] == 1) {
-                    echo "Modelo cadastrado com sucesso!";
+                    echo $nome."cadastrado com sucesso!";
                 } elseif ($_GET['sucesso'] == 2) {
-                    echo "Modelo editado com sucesso!";
+                    echo $nome."editado com sucesso!";
                 } ?>
             </p>
         <?php endif; ?>
 
         <?php if (isset($_GET['erro'])): ?>
-            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir"> Erro ao editar o modelo.</p>
+            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir"> Erro ao editar o <?php echo $nome; ?>.</p>
         <?php endif; ?>
 
-        <?php if (!empty($erros)): ?>
-            <div class="alerta-erro" style="margin-top: 20px;">
-                <ul style="padding-left: 20px; margin: 0;">
-                    <strong>Erros detectados:</strong>
-                    <?php foreach ($erros as $erro): ?>
-                        <li><?php echo $erro; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
+        <?php include '../includes/alerta_de_erro.php'; ?>
 
     </form>
 
@@ -235,26 +228,8 @@ $lista_de_modelos = listarModelos($pdo);
         </table>
     </div>
 
-    <script>
+    <script src="js/alertas.js"></script>
 
-        const mensagem = document.getElementsByClassName('sumir');
-
-        if (mensagem.length > 0) {
-            setTimeout(() => {
-                mensagem[0].style.opacity = '0';
-                setTimeout(() => {
-                    mensagem[0].remove();
-                }, 1000);
-            }, 3000);
-        }
-
-
-        if (window.history.replaceState) {
-            const novaUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, novaUrl);
-        }
-
-    </script>
 </body>
 
 </html>

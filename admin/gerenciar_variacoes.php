@@ -58,14 +58,10 @@ if (empty($erros)) {
     }
 
     if ($flag) {
-        header('Location: gerenciar_modelos.php?sucesso=1');
+        header('Location: editar_variacoes.php?imagem=1');
         exit();
     } else {
         $erros[] = "Erro ao cadastrar a variação. Por favor, tente novamente.";
-        echo "<div class='erros'><ul>";
-        foreach ($erros as $erro) {
-            echo "<li>" . htmlspecialchars($erro) . "</li></ul></div>";
-        }
     }
 }
 ?>
@@ -81,6 +77,8 @@ if (empty($erros)) {
     <title>Top Calçados - Gerenciar Variações</title>
 </head>
 
+<?php include '../includes/cabecalho_admin.php'; ?>
+
 <body class="admin">
 
     <h2>Cadastrar uma variação</h2>
@@ -90,18 +88,15 @@ if (empty($erros)) {
             <h3>Tamanho</h3>
             <input type="number" name="tamanho" placeholder="Tamanho" step="1" required>
         </div>
-        <div class="grid">
-            <h3>Cor</h3>
-            <section class="campos-cor">
-                <input type="color" name="cor_hex" value="#551A88">
-                <input type="text" name="cor" placeholder="Nome da cor (ex: Azul Royal)" required>
-            </section>
-        </div>
+
+        <input hidden type="color" name="cor_hex" value="#551A88">
+        <input hidden type="text" name="cor" value="">
+
         <div class="grid">
             <h3>Imagens</h3>
             <label for="imagem">Selecione uma imagem:</label>
             <input type="file" id="imagem" name="imagem"
-                accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp" required>
+                accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
             <label for="imagem2">Selecione uma segunda imagem:</label>
             <input type="file" id="imagem2" name="imagem2"
                 accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
@@ -110,9 +105,13 @@ if (empty($erros)) {
                 accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
         </div>
 
-        <button style="margin-top: 10px;" class="btn_acessar" type="submit">Cadastrar Modelo</button>
+        <button style="margin-top: 10px;" class="btn_acessar" type="submit">Avançar</button>
+
+        <?php include '../includes/alerta_de_erro.php'; ?>
 
     </form>
+
+    <script src="js/alertas.js"></script>
 
 </body>
 
