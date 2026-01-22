@@ -556,6 +556,21 @@ form textarea {
     background-color: #d69e2e;
 }
 
+.btn-add {
+    background-color: #8ccda3;
+    color: #166534;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    transition: background 0.2s;
+}  
+
+.btn-add:hover {
+    background-color: #22c55e;
+}
+
 .status-ativo { color: green; font-weight: bold; }
 .status-inativo { color: red; }
 

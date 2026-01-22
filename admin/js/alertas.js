@@ -11,6 +11,12 @@ if (mensagem.length > 0) {
 
 
 if (window.history.replaceState) {
-    const novaUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, novaUrl);
+
+    const parametros = new URLSearchParams(window.location.search);
+    parametros.delete('sucesso');
+    parametros.delete('erro');
+    const novaQuery = parametros.toString() ? '?' + parametros.toString() : '';
+    const url = window.location.pathname + novaQuery;
+    window.history.replaceState({}, document.title, url);
+
 }

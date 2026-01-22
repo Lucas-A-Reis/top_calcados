@@ -8,19 +8,15 @@ require_once '../src/services/imagemServico.php';
 require_once '../src/services/variacaoServico.php';
 require_once '../src/helpers/funcoes_uteis.php';
 
-// $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-// if ($id <= 0) {
-//     header("Location: gerenciar_variacoes.php?erro=variacao_nao_encontrada");
-//     exit();
-// }
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($id <= 0) {
+    header("Location: calcados_gerenciar_variacoes.php?erro=variacao_nao_encontrada");
+    exit();
+}
 
-$variacao = buscarVariacaoPorId($pdo, 13);
+$variacao = buscarVariacaoPorId($pdo, $id);
 
-var_dump($imagens = buscarImagensPorVariacaoId($pdo, 13));
-
-foreach ($imagens as $imagem):
-    echo htmlspecialchars($imagem->getCaminhoArquivo());
-endforeach;
+$imagens = buscarImagensPorVariacaoId($pdo, $id);
 
 
 ?>
@@ -31,6 +27,7 @@ endforeach;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styles.css">
     <title>Top Calçados - Editar Variação</title>
 </head>
 

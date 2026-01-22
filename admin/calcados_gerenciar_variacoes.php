@@ -8,6 +8,8 @@ require_once '../src/services/imagemServico.php';
 require_once '../src/services/variacaoServico.php';
 require_once '../src/helpers/funcoes_uteis.php';
 
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $erros = [];
@@ -38,7 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (empty($erros)) {
 
-        $variacao = new Variacao(10, $tamanho, $cor_hex, $cor);
+        echo "chegou aqui".$id;
+        $variacao = new Variacao($id, $tamanho, $cor_hex, $cor);
 
         if (inserirVariacao($pdo, $variacao)) {
             $id_variacao = (int)$pdo->lastInsertId();
@@ -58,7 +61,7 @@ if (empty($erros)) {
     }
 
     if ($flag) {
-        header('Location: editar_variacoes.php?imagem=1');
+        header('Location: calcados_editar_variacao.php?id=' . $id_variacao. '&imagem=1');
         exit();
     } else {
         $erros[] = "Erro ao cadastrar a variação. Por favor, tente novamente.";

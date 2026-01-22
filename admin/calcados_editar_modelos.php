@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloEditado->setId($id);
 
     if (atualizarModelo($pdo, $modeloEditado)) {
-        header("Location: gerenciar_modelos.php?sucesso=2");
+        header("Location: calcados_gerenciar_modelos.php?sucesso=2");
         exit();
     } else {
-        header("Location: gerenciar_modelos.php?erro=1");
+        header("Location: calcados_gerenciar_modelos.php?erro=1");
     }
 }
 
@@ -39,7 +39,7 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $modelo = buscarModeloPorId($pdo, $id);
 
 if (!$modelo) {
-    header("Location: gerenciar_modelos.php?erro=modelo_nao_encontrado");
+    header("Location: calcados_gerenciar_modelos.php?erro=modelo_nao_encontrado");
     exit();
 }
 

@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($flag) {
-        header("Location: gerenciar_modelos.php?sucesso=1");
+        header("Location: calcados_gerenciar_modelos.php?sucesso=1");
         exit();
     } else {
         $erros[] = "Erro ao salvar o modelo no banco de dados, verifique os dados e tente novamente.";
@@ -220,7 +220,8 @@ $lista_de_modelos = listarModelos($pdo);
                         <td><?php echo $m->getPeso(); ?>g</td>
                         <td><small><?php echo $m->getSlug(); ?></small></td>
                         <td>
-                            <a href="editar_modelos.php?id=<?php echo $m->getId(); ?>" class="btn-editar">Editar</a>
+                            <a href="calcados_editar_modelos.php?id=<?php echo $m->getId(); ?>" class="btn-editar">Editar</a>
+                            <a href="calcados_gerenciar_variacoes.php?id=<?php echo $m->getId(); ?>" class="btn-add">Adicionar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

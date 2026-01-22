@@ -8,8 +8,7 @@
         <ul>
             <?php
             $links = [
-                'gerenciar_modelos.php' => 'Modelos',
-                'gerenciar_variacoes.php' => 'Variacoes',
+                'gerenciar_modelos.php' => 'Calcados',
                 'clientes.php' => 'Clientes',
                 'pedidos.php' => 'Pedidos',
                 'historico.php' => 'Histórico'
