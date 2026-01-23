@@ -81,8 +81,9 @@ function buscarVariacoesPorModelo(PDO $pdo, int $modelo_id): ?array {
             return null;
         }
 
+        $lista_variacoes = [];
         foreach($linhas as $linha) {
-             $variacao = new Variacao(
+             $lista_variacoes[] = new Variacao(
                 $linha['modelo_id'],
                 $linha['tamanho'],
                 $linha['cor_hex'],
@@ -91,8 +92,6 @@ function buscarVariacoesPorModelo(PDO $pdo, int $modelo_id): ?array {
             );
         }
 
-        $lista_variacoes = [];
-        $lista_variacoes[] = $variacao;
         return $lista_variacoes;
 
     } catch (PDOException $e) {

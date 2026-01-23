@@ -144,12 +144,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h2 style="margin-top: 40px;">Variações Cadastrados</h2>
 
-    <?php $listaVariacoes = buscarVariacoesPorModelo($pdo, $id) ?>
+    <?php var_dump($listaVariacoes = buscarVariacoesPorModelo($pdo, $id)) ?>
 
     <?php if ($listaVariacoes): ?>
 
-        <div style="width: auto;" class="container-tabela">
-            <table style="width: auto;" class="tabela">
+        <div class="container-tabela compacta">
+            <table class="tabela">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                                 <a class ="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
                                 <a class="btn-add" href="">Imagens</a>
-                                <a href="">Excluir</a>
+                                <a class="btn-excluir" href="">Excluir</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -570,6 +570,20 @@ form textarea {
 .btn-add:hover {
     background-color: #22c55e;
 }
+.btn-excluir {
+    background-color: red;
+    color: darkred;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    transition: background 0.2s;
+}  
+
+.btn-excluir:hover {
+    background-color: rgb(225, 0, 94);
+}
 
 .status-ativo { color: green; font-weight: bold; }
 .status-inativo { color: red; }
@@ -727,4 +741,15 @@ form textarea {
     .campo-imagem-editar img {
         margin: 0 auto;
     }
+}
+
+.compacta {
+    max-width: 800px;
+}
+
+
+.compacta td, .compacta th {
+    width: 25%;
+    text-align: center;
+    padding: 10px;
 }
