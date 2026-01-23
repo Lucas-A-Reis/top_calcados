@@ -221,7 +221,7 @@ $lista_de_modelos = listarModelos($pdo);
                         <td><small><?php echo $m->getSlug(); ?></small></td>
                         <td>
                             <a href="calcados_editar_modelos.php?id=<?php echo $m->getId(); ?>" class="btn-editar">Editar</a>
-                            <a href="calcados_gerenciar_variacoes.php?id=<?php echo $m->getId(); ?>" class="btn-add">Adicionar</a>
+                            <a href="calcados_gerenciar_variacoes.php?id=<?php echo $m->getId(); ?>" class="btn-add">Variações</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

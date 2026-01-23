@@ -46,8 +46,8 @@ $imagens = buscarImagensPorVariacaoId($pdo, $id);
         <div class="grid">
             <h3>Cor</h3>
             <section class="campos-cor">
-                <input type="color" name="cor_hex" value="#551A88" required>
-                <input type="text" name="cor" placeholder="Nome da cor (ex: Azul Royal)" required>
+                <input type="color" name="cor_hex" value=<?= htmlspecialchars($variacao->getCorHex())?>>
+                <input type="text" name="cor" value=<?= htmlspecialchars($variacao->getCor())?>>
             </section>
         </div>
 
@@ -72,24 +72,6 @@ $imagens = buscarImagensPorVariacaoId($pdo, $id);
 
         <?php include '../includes/alerta_de_erro.php'; ?>
 
-    </form>
-
-    <form class="form" action="">
-        <h3 style="margin-bottom: 40px;">Adicionar mais Imagens</h3>
-        <?php for ($i = count($imagens); $i < 3; $i++): ?>
-            <div class="campo-imagem-editar">
-                <div class="container-imagem-editar">
-                    <img class="preview-img" src="../media/img/sem_imagem.png" width="100">
-
-                    <input type="file" name="imagem<?php echo $i + 1; ?>" class="input-img" id="imagem<?php echo $i + 1; ?>"
-                        accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
-
-                    <label for="imagem<?php echo $i + 1; ?>">
-                        Adicionar Imagem
-                    </label>
-                </div>
-            </div>
-        <?php endfor; ?>
     </form>
 
 <script>

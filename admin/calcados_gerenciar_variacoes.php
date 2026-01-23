@@ -36,14 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = "Pelo menos uma imagem deve ser enviada.";
     }
 
-    $flag = false;
-
-if (empty($erros)) {
+    if (empty($erros)) {
 
         $variacao = new Variacao($id, $tamanho, $cor_hex, $cor);
 
         if (inserirVariacao($pdo, $variacao)) {
-            $id_variacao = (int)$pdo->lastInsertId();
+            $id_variacao = (int) $pdo->lastInsertId();
 
             foreach ($imagens as $imagem) {
 
@@ -55,13 +53,7 @@ if (empty($erros)) {
                     inserirImagem($pdo, $imagemModel);
                 }
             }
-            $flag = true;
         }
-    }
-
-    if ($flag) {
-        header('Location: calcados_editar_variacao.php?id=' . $id_variacao. '&imagem=1');
-        exit();
     } else {
         $erros[] = "Erro ao cadastrar a variação. Por favor, tente novamente.";
     }
@@ -91,30 +83,103 @@ if (empty($erros)) {
             <input type="number" name="tamanho" placeholder="Tamanho" step="1" required>
         </div>
 
-        <input hidden type="color" name="cor_hex" value="#551A88">
-        <input hidden type="text" name="cor" value="">
-
         <div class="grid">
-            <h3>Imagens</h3>
-            <label for="imagem">Selecione uma imagem:</label>
-            <input type="file" id="imagem" name="imagem"
-                accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
-            <label for="imagem2">Selecione uma segunda imagem:</label>
-            <input type="file" id="imagem2" name="imagem2"
-                accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
-            <label for="imagem3">Selecione uma terceira imagem:</label>
-            <input type="file" id="imagem3" name="imagem3"
-                accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
+            <h3>Cor</h3>
+            <section class="campos-cor">
+                <input type="color" name="cor_hex" value="#551A88" required>
+                <input type="text" name="cor" placeholder="Nome da cor (ex: Azul Royal)" required>
+            </section>
         </div>
 
-        <button style="margin-top: 10px;" class="btn_acessar" type="submit">Avançar</button>
+
+        <h3 style="margin-bottom: 40px;">Adicionar Imagens</h3>
+        <div class="imagens-editar">
+
+            <div class="campo-imagem-editar">
+                <div class="container-imagem-editar">
+                    <img class="preview-img" src="../media/img/logo.webp" width="100">
+
+                    <input type="file" name="imagem" class="input-img" id="imagem"
+                        accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
+
+                    <label for="imagem">
+                        Adicionar Imagem
+                    </label>
+                </div>
+            </div>
+
+            <div class="campo-imagem-editar">
+                <div class="container-imagem-editar">
+                    <img class="preview-img" src="../media/img/logo.webp" width="100">
+
+                    <input type="file" name="imagem2" class="input-img" id="imagem2"
+                        accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
+
+                    <label for="imagem2">
+                        Adicionar Imagem
+                    </label>
+                </div>
+            </div>
+
+            <div class="campo-imagem-editar">
+                <div class="container-imagem-editar">
+                    <img class="preview-img" src="../media/img/logo.webp" width="100">
+
+                    <input type="file" name="imagem3" class="input-img" id="imagem3"
+                        accept="image/png, image/jpeg, image/gif, image/svg+xml, image/webp">
+
+                    <label for="imagem3">
+                        Adicionar Imagem
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <button style="margin-top: 10px;" class="btn_acessar" type="submit">Adicionar</button>
 
         <?php include '../includes/alerta_de_erro.php'; ?>
 
     </form>
 
-    <script src="js/alertas.js"></script>
+    <h2 style="margin-top: 40px;">Variações Cadastrados</h2>
 
+    <?php $listaVariacoes = buscarVariacoesPorModelo($pdo, $id) ?>
+
+    <?php if ($listaVariacoes): ?>
+
+        <div style="width: auto;" class="container-tabela">
+            <table style="width: auto;" class="tabela">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tamanho</th>
+                        <th>Cor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($listaVariacoes as $v): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($v->getId()) ?></td>
+                            <td><?= htmlspecialchars($v->getTamanho()) ?></td>
+                            <td style="color: <?= htmlspecialchars($v->getCorHex()) ?>"><?= htmlspecialchars($v->getCor()) ?></td>
+                            <td>
+                                <a class ="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
+                                <a class="btn-add" href="">Imagens</a>
+                                <a href="">Excluir</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+    <?php else: ?>
+        <p class="alerta-erro">Nenhuma variação cadastrada ainda</p>
+    <?php endif ?>
+
+    <script src="js/alertas.js"></script>
 </body>
 
 </html>

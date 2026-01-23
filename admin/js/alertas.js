@@ -20,3 +20,21 @@ if (window.history.replaceState) {
     window.history.replaceState({}, document.title, url);
 
 }
+
+document.querySelectorAll('.input-img').forEach(input => {
+    input.addEventListener('change', function () {
+
+        const arquivo = this.files[0];
+        const previewImg = this.closest('.container-imagem-editar').querySelector('.preview-img');
+
+        if (arquivo) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImg.src = e.target.result;
+            }
+
+            reader.readAsDataURL(arquivo);
+        }
+    });
+})

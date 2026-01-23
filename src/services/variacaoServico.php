@@ -67,3 +67,36 @@ function atualizarVariacao(PDO $pdo, Variacao $variacao) {
         return false;
     }
 }
+
+function buscarVariacoesPorModelo(PDO $pdo, int $modelo_id): ?array {
+    try {
+        $sql = "SELECT * FROM variacoes_calcado WHERE modelo_id = :modelo_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':modelo_id', $modelo_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $linhas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$linhas) {
+            return null;
+        }
+
+        foreach($linhas as $linha) {
+             $variacao = new Variacao(
+                $linha['modelo_id'],
+                $linha['tamanho'],
+                $linha['cor_hex'],
+                $linha['cor'],
+                $linha['id']
+            );
+        }
+
+        $lista_variacoes = [];
+        $lista_variacoes[] = $variacao;
+        return $lista_variacoes;
+
+    } catch (PDOException $e) {
+        error_log("Erro ao buscar variação: " . $e->getMessage());
+        return null;
+    }
+}
