@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $tamanho = sanitizar($_POST['tamanho'] ?? '', 'int');
     $cor_hex = sanitizar($_POST['cor_hex'] ?? '', 'string');
-    $cor = sanitizar($_POST['cor'] ?? '', 'string');
+    $cor = padronizarEntrada(sanitizar($_POST['cor'] ?? '', 'string'));
 
     if ($tamanho <= 0) {
         $erros[] = "O tamanho deve ser um valor positivo.";
@@ -36,27 +36,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = "Pelo menos uma imagem deve ser enviada.";
     }
 
+    $flag = false;
+
     if (empty($erros)) {
 
         $variacao = new Variacao($id, $tamanho, $cor_hex, $cor);
 
-        if (inserirVariacao($pdo, $variacao)) {
-            $id_variacao = (int) $pdo->lastInsertId();
+        try {
+            $pdo->beginTransaction();
 
-            foreach ($imagens as $imagem) {
+            if (inserirVariacao($pdo, $variacao)) {
+                $id_variacao = (int) $pdo->lastInsertId();
 
-                $nome_imagem = upload($imagem);
-
-                if ($nome_imagem) {
+                foreach ($imagens as $imagem) {
+                    $nome_imagem = upload($imagem);
+                    if (!$nome_imagem) {
+                        throw new Exception("Falha no upload da imagem.");
+                    }
 
                     $imagemModel = new Imagem($id_variacao, $nome_imagem);
-                    inserirImagem($pdo, $imagemModel);
+                    if (!inserirImagem($pdo, $imagemModel)) {
+                        throw new Exception("Erro ao inserir imagem no banco.");
+                    }
                 }
+
+                $pdo->commit(); 
+                $flag = true;
             }
+
+        } catch (Exception $e) {
+            $pdo->rollBack(); 
+            error_log($e->getMessage());
+            $flag = false;
         }
     } else {
         $erros[] = "Erro ao cadastrar a variação. Por favor, tente novamente.";
     }
+
+    if ($flag) {
+        header('Location: calcados_gerenciar_variacoes.php?id=' . $id . '&sucesso=1');
+    } else {
+        header('Location: calcados_gerenciar_variacoes.php?id=' . $id . '&erro=1');
+    }
+
 }
 ?>
 
@@ -138,7 +160,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button style="margin-top: 10px;" class="btn_acessar" type="submit">Adicionar</button>
 
-        <?php include '../includes/alerta_de_erro.php'; ?>
+        <?php $nome = "Variação ";
+
+        include '../includes/alertas.php';
+
+        include '../includes/alerta_de_erro.php'; ?>
 
     </form>
 
@@ -163,9 +189,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <tr>
                             <td><?= htmlspecialchars($v->getId()) ?></td>
                             <td><?= htmlspecialchars($v->getTamanho()) ?></td>
-                            <td style="display: flex; justify-content: center; gap: 5px; width: 200px;" ><div style="background-color: <?= htmlspecialchars($v->getCorHex()) ?>;" class="bolinha"></div><div><?= htmlspecialchars($v->getCor()) ?></div></td>
+                            <td style="display: flex; justify-content: center; gap: 5px; width: 200px;">
+                                <div style="background-color: <?= htmlspecialchars($v->getCorHex()) ?>;" class="bolinha"></div>
+                                <div><?= htmlspecialchars($v->getCor()) ?></div>
+                            </td>
                             <td>
-                                <a class ="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
+                                <a class="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
                                 <a class="btn-add" href="">Imagens</a>
                                 <a class="btn-excluir" href="">Excluir</a>
                             </td>

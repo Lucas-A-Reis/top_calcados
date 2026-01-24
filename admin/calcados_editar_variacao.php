@@ -17,12 +17,13 @@ if ($id <= 0) {
 $erros = [];
 
 $variacao = buscarVariacaoPorId($pdo, $id);
+$modeloId = $variacao->getModeloId();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idVariacao = $id;
-    $tamanho = (int) $_POST['tamanho'];
-    $corHex = $_POST['cor_hex'];
-    $cor = $_POST['cor'];
+    $idVariacao = sanitizar($id, 'int');
+    $tamanho = sanitizar((int) $_POST['tamanho'], 'int');
+    $corHex = sanitizar($_POST['cor_hex'], 'string');
+    $cor = padronizarEntrada(sanitizar($_POST['cor'], 'string'));
 
     if ($tamanho <= 0) {
         $erros[] = "O tamanho deve ser um valor positivo.";
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(empty($erros)){
 
     $variacaoParaAtualizar = new Variacao(
-        $variacao->getModeloId(),
+        $modeloId,
         $tamanho,
         $corHex,
         $cor,
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if (atualizarVariacao($pdo, $variacaoParaAtualizar)) {
-        header("Location: calcados_gerenciar_variacoes.php?sucesso=1");
+        header("Location: calcados_gerenciar_variacoes.php?id=$modeloId&&sucesso=2");
         exit();
     } else {
         $erros[] = "Erro ao atualizar no banco de dados.";

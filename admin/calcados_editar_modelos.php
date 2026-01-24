@@ -8,10 +8,10 @@ require_once '../src/helpers/funcoes_uteis.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int) $_POST['id'];
-    $marca = sanitizar($_POST['marca'], 'string');
-    $tipo = sanitizar($_POST['tipo'] ?? null, 'string');
+    $marca = padronizarEntrada(sanitizar($_POST['marca'], 'string'));
+    $tipo = padronizarEntrada(sanitizar($_POST['tipo'] ?? null, 'string'));
     $preco = sanitizar($_POST['preco'], 'float');
-    $descricao = sanitizar($_POST['descricao'] ?? null, 'string');
+    $descricao = padronizarEntrada(sanitizar($_POST['descricao'] ?? null, 'string'));
     $genero = sanitizar($_POST['genero'] ?? null, 'string');
     $faixa_etaria = sanitizar($_POST['faixa_etaria'] ?? null, 'string');
     $peso = sanitizar($_POST['peso'], 'int');
@@ -95,13 +95,13 @@ if (!$modelo) {
 
             <h3>Público</h3>
             <select name="genero" value="<?php echo htmlspecialchars($modelo->getGenero() ?? ''); ?>">
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Unissex">Unissex</option>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+                <option value="unissex">Unissex</option>
             </select>
             <select name="faixa_etaria" value="<?php echo htmlspecialchars($modelo->getFaixaEtaria() ?? ''); ?>">
-                <option value="Infantil">Infantil</option>
-                <option value="Adulto">Adulto</option>
+                <option value="infantil">Infantil</option>
+                <option value="adulto">Adulto</option>
             </select>
         </div>
         </div>

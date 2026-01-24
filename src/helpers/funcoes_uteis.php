@@ -168,3 +168,12 @@ function upload(array $arquivo) {
     } 
         return false;
 }
+
+
+function padronizarEntrada(string $texto): ?string {
+    if ($texto != null){
+    return trim(mb_strtolower($texto, 'UTF-8'));
+    } else {
+        return null;
+    }
+}

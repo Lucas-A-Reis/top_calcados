@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $erros = [];
 
     // Sanitização
-    $marca = sanitizar($_POST['marca'] ?? '', 'string');
+    $marca = padronizarEntrada(sanitizar($_POST['marca'] ?? '', 'string'));
     $preco = sanitizar($_POST['preco'] ?? '', 'float');
     $peso = sanitizar($_POST['peso'] ?? '', 'int');
     $comprimento = sanitizar($_POST['comprimento'] ?? '', 'int');
@@ -34,22 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Sanitização dos campos opcionais
-    $tipo = sanitizar($_POST['tipo'] ?? '', 'string');
+    $tipo = padronizarEntrada(sanitizar($_POST['tipo'] ?? '', 'string'));
     if (trim($tipo) === "") {
         $tipo = null;
     }
 
-    $descricao = sanitizar($_POST['descricao'] ?? '', 'string');
+    $descricao = padronizarEntrada(sanitizar($_POST['descricao'] ?? '', 'string'));
     if (trim($descricao) === "") {
         $descricao = null;
     }
 
-    $genero = sanitizar($_POST['genero'] ?? '', 'string');
+    $genero = padronizarEntrada(sanitizar($_POST['genero'] ?? '', 'string'));
     if (trim($genero) === "") {
         $genero = null;
     }
 
-    $faixa_etaria = sanitizar($_POST['faixa_etaria'] ?? '', 'string');
+    $faixa_etaria = padronizarEntrada(sanitizar($_POST['faixa_etaria'] ?? '', 'string'));
     if (trim($faixa_etaria) === "") {
         $faixa_etaria = null;
     }
@@ -161,23 +161,11 @@ $lista_de_modelos = listarModelos($pdo);
 
         <button class="btn_acessar" type="submit">Cadastrar Modelo</button>
 
-        <?php $nome = "Modelo"; ?>
+        <?php $nome = "Modelo ";
 
-        <?php if (isset($_GET['sucesso'])): ?>
-            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-sucesso sumir">
-                <?php if ($_GET['sucesso'] == 1) {
-                    echo $nome."cadastrado com sucesso!";
-                } elseif ($_GET['sucesso'] == 2) {
-                    echo $nome."editado com sucesso!";
-                } ?>
-            </p>
-        <?php endif; ?>
+        include '../includes/alertas.php'; 
 
-        <?php if (isset($_GET['erro'])): ?>
-            <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir"> Erro ao editar o <?php echo $nome; ?>.</p>
-        <?php endif; ?>
-
-        <?php include '../includes/alerta_de_erro.php'; ?>
+        include '../includes/alerta_de_erro.php'; ?>
 
     </form>
 
