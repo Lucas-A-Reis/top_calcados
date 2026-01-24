@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h2 style="margin-top: 40px;">Variações Cadastrados</h2>
 
-    <?php var_dump($listaVariacoes = buscarVariacoesPorModelo($pdo, $id)) ?>
+    <?php $listaVariacoes = buscarVariacoesPorModelo($pdo, $id) ?>
 
     <?php if ($listaVariacoes): ?>
 
@@ -163,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <tr>
                             <td><?= htmlspecialchars($v->getId()) ?></td>
                             <td><?= htmlspecialchars($v->getTamanho()) ?></td>
-                            <td style="color: <?= htmlspecialchars($v->getCorHex()) ?>"><?= htmlspecialchars($v->getCor()) ?></td>
+                            <td style="display: flex; justify-content: center; gap: 5px; width: 200px;" ><div style="background-color: <?= htmlspecialchars($v->getCorHex()) ?>;" class="bolinha"></div><div><?= htmlspecialchars($v->getCor()) ?></div></td>
                             <td>
                                 <a class ="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
                                 <a class="btn-add" href="">Imagens</a>

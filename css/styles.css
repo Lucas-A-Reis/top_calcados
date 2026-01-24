@@ -752,4 +752,17 @@ form textarea {
     width: 25%;
     text-align: center;
     padding: 10px;
+    place-items: center;
+}
+
+.bolinha {
+    box-shadow: 
+        -0.7px -0.7px 0 black,  
+         0.7px -0.7px 0 black,
+        -0.7px  0.7px 0 black,
+         0.7px  0.7px 0 black;
+
+    height: 10px;
+    width: 10px;
+    border-radius: 7.5px;
 }
