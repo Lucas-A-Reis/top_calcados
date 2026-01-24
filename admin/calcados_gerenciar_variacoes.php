@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button style="margin-top: 10px;" class="btn_acessar" type="submit">Adicionar</button>
 
-        <?php $nome = "Variação ";
+        <?php $nome = " Variação ";
 
         include '../includes/alertas.php';
 
@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                                 <a class="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
                                 <a class="btn-add" href="">Imagens</a>
-                                <a class="btn-excluir" href="">Excluir</a>
+                                <a class="btn-excluir" href="deletar_variacao.php?id=<?= $v->getId() ?>&modelo_id=<?= $v->getModeloId()?>" onclick="return confirm('Deseja excluir esta variação?')">Excluir</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

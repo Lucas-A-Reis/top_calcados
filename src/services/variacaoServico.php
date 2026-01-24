@@ -99,3 +99,32 @@ function buscarVariacoesPorModelo(PDO $pdo, int $modelo_id): ?array {
         return null;
     }
 }
+
+function excluirVariacao(PDO $pdo, int $idVariacao) {
+    try {
+        $pdo->beginTransaction();
+
+        $sqlImagens = "SELECT arquivo FROM imagens WHERE variacao_id = :id";
+        $stmtImg = $pdo->prepare($sqlImagens);
+        $stmtImg->execute([':id' => $idVariacao]);
+        $imagens = $stmtImg->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($imagens as $img) {
+            $caminho = "../media/img/calcados/" . $img['arquivo'];
+            if (file_exists($caminho)) {
+                unlink($caminho);
+            }
+        }
+
+        $sqlDelete = "DELETE FROM variacoes_calcado WHERE id = :id";
+        $stmtDel = $pdo->prepare($sqlDelete);
+        $stmtDel->execute([':id' => $idVariacao]);
+
+        $pdo->commit();
+        return true;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Erro ao excluir variação: " . $e->getMessage());
+        return false;
+    }
+}
