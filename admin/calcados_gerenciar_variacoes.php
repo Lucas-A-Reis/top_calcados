@@ -195,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </td>
                             <td>
                                 <a class="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
-                                <a class="btn-add" href="">Imagens</a>
+                                <a class="btn-add" href="calcados_imagens.php?id=<?= $v->getId() ?>">Imagens</a>
                                 <a class="btn-excluir" href="deletar_variacao.php?id=<?= $v->getId() ?>&modelo_id=<?= $v->getModeloId()?>" onclick="return confirm('Deseja excluir esta variação?')">Excluir</a>
                             </td>
                         </tr>

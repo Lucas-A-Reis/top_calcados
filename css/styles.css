@@ -766,3 +766,24 @@ form textarea {
     width: 10px;
     border-radius: 7.5px;
 }
+
+.container-imagem-editar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Espaço entre os elementos */
+}
+
+.btn-excluir-img {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.btn-excluir-img:hover {
+    background-color: #cc0000;
+}

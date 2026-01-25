@@ -6,16 +6,20 @@
             echo $nome . "editado com sucesso!";
         } elseif ($_GET['sucesso'] == 3) {
             echo $nome . "excluído com sucesso!";
-        }?>
+        } ?>
     </p>
 <?php endif; ?>
 
 <?php if (isset($_GET['erro'])): ?>
-    <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir"> 
+    <p style="transition: opacity 1s ease; margin-top: 20px;" class="alerta-erro sumir">
         <?php if ($_GET['erro'] == 1) {
-            echo "erro ao editar".$nome;
+            echo "erro ao editar" . $nome;
         } elseif ($_GET['erro'] == 2) {
-            echo "erro ao excluir".$nome;
-        }?>
-       </p>
+            echo "erro ao excluir" . $nome;
+        } elseif ($_GET['erro'] == 3) {
+            echo "Não é possível excluir todas as imagens.";
+        } else {
+            echo "Ocorreu um erro inesperado.";
+        } ?>
+    </p>
 <?php endif; ?>
