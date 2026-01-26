@@ -1,6 +1,6 @@
 <?php
 require_once '../checkout/config.php';
-#require_once 'autenticacao.php';
+require_once 'autenticacao.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/variacao.php';
 require_once '../src/models/imagem.php';
@@ -29,23 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = "O tamanho deve ser um valor positivo.";
     }
 
-    if(empty($erros)){
+    if (empty($erros)) {
 
-    $variacaoParaAtualizar = new Variacao(
-        $modeloId,
-        $tamanho,
-        $corHex,
-        $cor,
-        $id
-    );
+        $variacaoParaAtualizar = new Variacao(
+            $modeloId,
+            $tamanho,
+            $corHex,
+            $cor,
+            $id
+        );
 
-    if (atualizarVariacao($pdo, $variacaoParaAtualizar)) {
-        header("Location: calcados_gerenciar_variacoes.php?id=$modeloId&&sucesso=2");
-        exit();
-    } else {
-        $erros[] = "Erro ao atualizar no banco de dados.";
+        if (atualizarVariacao($pdo, $variacaoParaAtualizar)) {
+            registrar($pdo, $_SESSION['admin_id'], 'UPDATE', 'variacoes_calcados', $id);
+            header("Location: calcados_gerenciar_variacoes.php?id=$modeloId&&sucesso=2");
+            exit();
+        } else {
+            $erros[] = "Erro ao atualizar no banco de dados.";
+        }
     }
-}
 }
 
 ?>

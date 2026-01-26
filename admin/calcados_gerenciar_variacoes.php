@@ -1,6 +1,6 @@
 <?php
 require_once '../checkout/config.php';
-#require_once 'autenticacao.php';
+require_once 'autenticacao.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/variacao.php';
 require_once '../src/models/imagem.php';
@@ -57,15 +57,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $imagemModel = new Imagem($id_variacao, $nome_imagem);
                     if (!inserirImagem($pdo, $imagemModel)) {
                         throw new Exception("Erro ao inserir imagem no banco.");
+                    } else {
+                        registrar($pdo, $_SESSION['admin_id'], 'INSERT', 'imagens', $pdo->lastInsertId());
                     }
                 }
 
-                $pdo->commit(); 
+                registrar($pdo, $_SESSION['admin_id'], 'INSERT', 'variacoes_calcados', $id_variacao);
+
+                $pdo->commit();
                 $flag = true;
             }
 
         } catch (Exception $e) {
-            $pdo->rollBack(); 
+            $pdo->rollBack();
             error_log($e->getMessage());
             $flag = false;
         }
@@ -196,7 +200,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td>
                                 <a class="btn-editar" href="calcados_editar_variacao.php?id=<?= $v->getId() ?>">Editar</a>
                                 <a class="btn-add" href="calcados_imagens.php?id=<?= $v->getId() ?>">Imagens</a>
-                                <a class="btn-excluir" href="deletar_variacao.php?id=<?= $v->getId() ?>&modelo_id=<?= $v->getModeloId()?>" onclick="return confirm('Deseja excluir esta variação?')">Excluir</a>
+                                <a class="btn-excluir"
+                                    href="deletar_variacao.php?id=<?= $v->getId() ?>&modelo_id=<?= $v->getModeloId() ?>"
+                                    onclick="return confirm('Deseja excluir esta variação?')">Excluir</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

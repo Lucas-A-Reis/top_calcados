@@ -6,6 +6,8 @@
             echo $nome . "editado com sucesso!";
         } elseif ($_GET['sucesso'] == 3) {
             echo $nome . "excluído com sucesso!";
+        } elseif ($_GET['sucesso'] == 4) {
+            echo "Galeria atualizada com sucesso!";
         } ?>
     </p>
 <?php endif; ?>

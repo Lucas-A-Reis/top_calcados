@@ -1,6 +1,6 @@
 <?php
 require_once '../checkout/config.php';
-#require_once 'autenticacao.php';
+require_once 'autenticacao.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/modelo.php';
 require_once '../src/services/modeloServico.php';
@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloEditado->setId($id);
 
     if (atualizarModelo($pdo, $modeloEditado)) {
+        registrar($pdo, $_SESSION['admin_id'], 'UPDATE', 'modelos_calcado', $id);
         header("Location: calcados_gerenciar_modelos.php?sucesso=2");
         exit();
     } else {

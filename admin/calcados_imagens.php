@@ -1,6 +1,6 @@
 <?php
 require_once '../checkout/config.php';
-#require_once 'autenticacao.php';
+require_once 'autenticacao.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/variacao.php';
 require_once '../src/models/imagem.php';
@@ -28,30 +28,39 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
         if (isset($_FILES[$campo]) && $_FILES[$campo]['error'] === UPLOAD_ERR_OK) {
 
-            $novoNome = upload($_FILES[$campo]);
+            try {
+                $novoNome = upload($_FILES[$campo]);
 
-            if ($novoNome) {
-                if ($idImgExistente) {
-                    if(!atualizarImagem($pdo, (int) $idImgExistente, $novoNome)){
-                        $erros[] = "Erro ao atualizar a imagem ".($i + 1);
-                    };
-                } else {
-                    $novaImagem = new Imagem($id, $novoNome);
-                    if(!inserirImagem($pdo, $novaImagem)){
-                        $erros[] = "Erro ao inserir a imagem ".($i + 1);
-                    };
-                }
-            } else {
-                $erros[] = "Erro no upload da imagem " . ($i + 1);
+                if (!$novoNome) {
+                    $erros[] = "Erro ao mover a imagem para a pasta do servidor ".($i + 1);
+                } elseif ($idImgExistente) {
+                        if (!atualizarImagem($pdo, (int) $idImgExistente, $novoNome)) {
+                            $erros[] = "Erro ao atualizar a imagem " . ($i + 1);
+                        } else {
+                            registrar($pdo, $_SESSION['admin_id'], 'UPDATE', 'imagens', $idImgExistente);
+                        }
+                    } else {
+                        $novaImagem = new Imagem($id, $novoNome);
+                        if (!inserirImagem($pdo, $novaImagem)) {
+                            $erros[] = "Erro ao inserir a imagem " . ($i + 1);
+                        } else {
+                            registrar($pdo, $_SESSION['admin_id'], 'INSERT', 'imagens', $pdo->lastInsertId());
+                        }
+                    }
+            } catch (PDOException $e) {
+                $erros[] = $e->getMessage();
+                break;
             }
+        } elseif (isset($_FILES[$campo]) && $_FILES[$campo]['error'] !== UPLOAD_ERR_NO_FILE) {
+            $erros[] = "Erro no upload da imagem " . ($i + 1);
         }
     }
-
     if (empty($erros)) {
-        header("Location: calcados_imagens.php?id=$id&sucesso=2");
+        header("Location: calcados_imagens.php?id=$id&sucesso=4");
         exit();
     }
 }
+
 
 ?>
 
@@ -105,12 +114,13 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         </div>
 
         <button style="margin-top: 30px;" class="btn_acessar" type="submit">Salvar Alterações</button>
-        
+
         <?php $nome = " Imagem ";
         include '../includes/alertas.php'; ?>
     </form>
 
-    <a style="margin-top:40px" href="calcados_gerenciar_variacoes.php?id=<?= buscarVariacaoPorId($pdo, $id)->getModeloId(); ?>">Voltar</a>
+    <a style="margin-top:40px"
+        href="calcados_gerenciar_variacoes.php?id=<?= buscarVariacaoPorId($pdo, $id)->getModeloId(); ?>">Voltar</a>
 
     <script src="js/alertas.js"></script>
 </body>

@@ -10,12 +10,11 @@
             $links = [
                 'calcados_gerenciar_modelos.php' => 'Calçados',
                 'clientes.php' => 'Clientes',
-                'pedidos.php' => 'Pedidos',
                 'historico.php' => 'Histórico'
             ];
 
             foreach ($links as $url => $label):
-                $classe_ativa = (temPalavraEmComum($titulo, str_replace('ç', 'c', $label))) ? 'class="nav-ativo"' : '';
+                $classe_ativa = (temPalavraEmComum($titulo, $label)) ? 'class="nav-ativo"' : '';
                 ?>
                 <li><a href="<?php echo $url; ?>" <?php echo $classe_ativa; ?>><?php echo $label; ?></a></li>
             <?php endforeach; ?>

@@ -135,11 +135,14 @@ function garantirSlugUnico(PDO $pdo, $slugOriginal) {
 }
 
 function temPalavraEmComum(string $string, string $string2): bool {
+    
+    $sem_acento = str_replace('ó', 'o', $string2);
+    $sem_cedilha = str_replace('ç', 'c', $sem_acento);
 
-    $palavras = explode(' ', $string);
-    $palavras2 = explode(' ', $string2);
+    $palavra = explode(' ', $string);
+    $palavra2 = explode(' ', $sem_cedilha);
 
-    $comuns = array_intersect($palavras, $palavras2);
+    $comuns = array_intersect($palavra, $palavra2);
 
     return count($comuns) > 0;
 }
@@ -175,5 +178,36 @@ function padronizarEntrada(string $texto): ?string {
     return trim(mb_strtolower($texto, 'UTF-8'));
     } else {
         return null;
+    }
+}
+
+function registrar(PDO $pdo, int $admin_id, string $acao, string $tabela, int $linha_id) {
+    $sql = "INSERT INTO logs (admin_id, acao, tabela_afetada, linha_afetada_id) 
+            VALUES (:admin_id, :acao, :tabela, :linha_id)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':admin_id' => $admin_id,
+        ':acao' => $acao,
+        ':tabela' => $tabela,
+        ':linha_id' => $linha_id
+    ]);
+}
+
+function buscarLogs($pdo, $limite = 50) {
+    try {
+        $sql = "SELECT logs.*, admins.nome as admin_nome
+                FROM logs
+                LEFT JOIN admins ON logs.admin_id = admins.id 
+                ORDER BY logs.data_hora DESC 
+                LIMIT :limite";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':limite', (int) $limite, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Erro ao buscar logs: " . $e->getMessage());
+        return [];
     }
 }

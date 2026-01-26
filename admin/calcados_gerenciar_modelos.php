@@ -1,6 +1,6 @@
 <?php
 require_once '../checkout/config.php';
-#require_once 'autenticacao.php';
+require_once 'autenticacao.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/modelo.php';
 require_once '../src/services/modeloServico.php';
@@ -76,10 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($erros)) {
 
         $flag = inserirModelo($pdo, $modelo);
+        $ultimo_id = $pdo->lastInsertId();
 
     }
 
     if ($flag) {
+        registrar($pdo, $_SESSION['admin_id'], 'INSERT', 'modelos_calcado', $ultimo_id);
         header("Location: calcados_gerenciar_modelos.php?sucesso=1");
         exit();
     } else {

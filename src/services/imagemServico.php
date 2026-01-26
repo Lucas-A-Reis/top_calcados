@@ -92,8 +92,6 @@ function excluirImagem($pdo, $id, $variacao_id)
 
         $pdo->beginTransaction();
 
-        $pdo->beginTransaction();
-
         $sql = "SELECT arquivo FROM imagens WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
