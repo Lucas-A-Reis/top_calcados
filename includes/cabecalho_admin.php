@@ -2,7 +2,7 @@
     <?php
     $arquivo_atual = basename($_SERVER['PHP_SELF']);
     $titulo = ucwords(str_replace('_', ' ', basename($arquivo_atual, '.php')));
-    echo "<h1>Painel Administrativo - " . $titulo . "</h1>";
+    echo "<h1>Painel Administrativo - " . str_ireplace('calcados' || 'clientes', '', $titulo) . "</h1>";
     ?>
     <nav id="nav_admin">
         <ul>

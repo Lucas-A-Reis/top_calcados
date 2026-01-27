@@ -555,6 +555,20 @@ form textarea {
 .btn-editar:hover {
     background-color: #d69e2e;
 }
+.btn-roxo {
+    background-color: #AB73DC;
+    color: #44027E;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.btn-roxo:hover {
+    background-color: #551A88;
+}
 
 .btn-add {
     background-color: #8ccda3;
@@ -744,7 +758,7 @@ form textarea {
 }
 
 .compacta {
-    max-width: 800px;
+    width: 800px;
 }
 
 

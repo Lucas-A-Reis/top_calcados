@@ -46,6 +46,14 @@ function buscarClientePorEmail(PDO $pdo, $email)
 
     return $stmt->fetch();
 }
+function buscarClientes(PDO $pdo)
+{
+    $sql = "SELECT * FROM clientes";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
 
 function criarPedidoDeRecuperacao(PDO $pdo, $email)
 {

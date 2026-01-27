@@ -39,3 +39,12 @@ function atualizarStatusPedido($pdo, $psp_id, $novo_status): bool
         ':psp_id' => (string) $psp_id
     ]);
 }
+
+function buscarPedidos($pdo){
+    $sql = 'SELECT pedidos.*, clientes.nome FROM pedidos
+            JOIN clientes WHERE clientes.id = pedidos.clientes_id
+            ORDER BY data_criacao DESC';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
