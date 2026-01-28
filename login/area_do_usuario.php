@@ -5,8 +5,6 @@ require_once '../src/database/conecta.php';
 require_once '../src/models/cliente.php';
 require_once '../src/services/clienteServico.php';
 
-var_dump($_SESSION);
-
 $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
 ?>
 
@@ -46,6 +44,25 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
                     </div>
                 </div>
             </div>
+            <div class="card campo-imagem-editar">
+                <div class="titulo_e_icone">
+                    <h3>Endereços</h3>
+                    <button id="btn-abrir-modal">
+                        <a style="color:black">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 12h8" />
+                                <path d="M12 8v8" />
+                            </svg>
+                        </a>
+                    </button>
+                </div>
+                <div class="informacoes">
+                </div>
+            </div>
+            </div>
             <div>
 
             </div>
@@ -53,6 +70,154 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
         <section></section>
     </main>
     <?php include '../includes/rodape.html'; ?>
+
+    <div id="modal-endereco" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar">&times;</span>
+            <h2>Novo Endereço</h2>
+            <form action="processar_endereco.php" method="POST">
+                <div>
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" placeholder="CEP" required onblur="pesquisarCep(this.value)"
+                        oninput="formataCEP(this)" maxlength="9">
+                </div>
+                <div>
+                    <label for="logradouro">Logradouro:</label>
+                    <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" required>
+                </div>
+
+                <div>
+                    <label for="numero">Numero:</label>
+                    <input type="number" id="numero" name="numero" placeholder="Número" required>
+                </div>
+
+                <div>
+                    <label for="bairro">Bairro:</label>
+                    <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+                </div>
+
+                <div>
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" id="cidade" name="cidade" placeholder="Cidade" list="cidades" required>
+                    <datalist id="cidades">
+                    </datalist>
+                </div>
+
+                <div>
+                    <label for="uf">UF:</label>
+                    <select id="uf" name="uf" onchange="carregarCidades(this.value)" required>
+                        <option value="">UF</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RS">RS</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </div>
+
+                <button style="margin-top: 10px;" class="btn_acessar" type="submit">Salvar Endereço</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal-endereco");
+        const btn = document.getElementById("btn-abrir-modal");
+        const x = document.querySelector(".fechar");
+
+        btn.onclick = () => modal.style.display = "block";
+
+        x.onclick = () => modal.style.display = "none";
+
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = "none";
+        }
+
+        function formataCEP(cep_inserido) {
+            let valor = cep_inserido.value;
+
+            valor = valor.replace(/\D/g, "");
+
+            if (valor.length > 5) {
+                valor = valor.replace(/^(\d{5})(\d)/, "$1-$2");
+            }
+
+            cep_inserido.value = valor;
+        }
+
+        function pesquisarCep(valor) {
+            const cep = valor.replace(/\D/g, '');
+
+            if (cep !== "" && cep.length === 8) {
+                document.getElementById('logradouro').value = "...";
+                document.getElementById('bairro').value = "...";
+                document.getElementById('cidade').value = "...";
+
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(res => res.json())
+                    .then(dados => {
+                        if (!("erro" in dados)) {
+                            document.getElementById('logradouro').value = dados.logradouro;
+                            document.getElementById('bairro').value = dados.bairro;
+                            document.getElementById('cidade').value = dados.localidade;
+                            document.getElementById('uf').value = dados.uf;
+                            carregarCidades(dados.uf);
+                        } else {
+                            alert("CEP não encontrado.");
+                            limparFormulario();
+                        }
+                    })
+                    .catch(() => alert("Erro ao consultar o CEP."));
+            }
+        }
+
+        function limparFormulario() {
+            document.getElementById('logradouro').value = "";
+            document.getElementById('bairro').value = "";
+            document.getElementById('cidade').value = "";
+            document.getElementById('uf').value = "";
+        }
+
+        function carregarCidades(uf) {
+            const datalist = document.getElementById('cidades');
+            datalist.innerHTML = '';
+
+            if (!uf) return;
+
+            fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
+                .then(res => res.json())
+                .then(cidades => {
+                    cidades.forEach(cidade => {
+                        const option = document.createElement('option');
+                        option.value = cidade.nome;
+                        datalist.appendChild(option);
+                    });
+                })
+                .catch(err => console.error("Erro ao carregar cidades do IBGE:", err));
+        }
+    </script>
 </body>
 
 </html>
