@@ -42,7 +42,7 @@ function atualizarStatusPedido($pdo, $psp_id, $novo_status): bool
 
 function buscarPedidos($pdo){
     $sql = 'SELECT pedidos.*, clientes.nome FROM pedidos
-            JOIN clientes WHERE clientes.id = pedidos.clientes_id
+            JOIN clientes WHERE clientes.id = pedidos.cliente_id
             ORDER BY data_criacao DESC';
     $stmt = $pdo->prepare($sql);
     $stmt->execute();

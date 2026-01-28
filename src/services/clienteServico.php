@@ -86,4 +86,14 @@ function criarPedidoDeRecuperacao(PDO $pdo, $email)
     }
 }
 
+function buscarClientePorId(PDO $pdo, $id)
+{
+    $sql = "SELECT * FROM clientes WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+
+    return $stmt->fetch();
+}
+
 ?>
