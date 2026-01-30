@@ -4,8 +4,12 @@ require_once '../checkout/config.php';
 require_once '../src/database/conecta.php';
 require_once '../src/models/cliente.php';
 require_once '../src/services/clienteServico.php';
+require_once '../src/models/endereco.php';
+require_once '../src/services/enderecoServico.php';
+
 
 $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
+$enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +64,15 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
                     </button>
                 </div>
                 <div class="informacoes">
+                    <?php if (empty($enderecos)): ?>
+                        <p>Você ainda não tem endereços cadastrados.</p>
+                     <?php else: ?>
+                        <?php foreach ($enderecos as $endereco): ?>
+                            <span style="display: flex; gap:5px; margin-bottom: 5px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                                <p><?= $endereco->getLogradouro()." ".$endereco->getNumero(); ?></p>
+                            </span>
+                        <?php endforeach; endif; ?>
                 </div>
             </div>
             </div>
@@ -76,6 +89,7 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
             <span class="fechar">&times;</span>
             <h2>Novo Endereço</h2>
             <form action="processar_endereco.php" method="POST">
+
                 <div>
                     <label for="cep">CEP:</label>
                     <input type="text" id="cep" name="cep" placeholder="CEP" required onblur="pesquisarCep(this.value)"
@@ -142,6 +156,7 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const modal = document.getElementById("modal-endereco");
         const btn = document.getElementById("btn-abrir-modal");
@@ -217,6 +232,41 @@ $cliente = buscarClientePorId($pdo, $_SESSION['cliente_id']);
                 })
                 .catch(err => console.error("Erro ao carregar cidades do IBGE:", err));
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.has('erro')) {
+                Toast.fire({
+                    icon: 'error',
+                    title: urlParams.get('erro')
+                });
+            }
+
+            if (urlParams.has('sucesso')) {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Endereço salvo com sucesso!'
+                });
+            }
+
+            if (urlParams.has('erro') || urlParams.has('sucesso')) {
+                const novaUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, novaUrl);
+            }
+        });
     </script>
 </body>
 
