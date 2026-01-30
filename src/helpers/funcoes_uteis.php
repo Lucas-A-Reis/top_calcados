@@ -211,3 +211,15 @@ function buscarLogs($pdo, $limite = 50) {
         return [];
     }
 }
+
+function formatarTelefone($numero) {
+    $numero = preg_replace('/\D/', '', $numero);
+    
+    if (strlen($numero) === 11) {
+        return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $numero);
+    } elseif (strlen($numero) === 10) {
+        return preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1) $2-$3', $numero);
+    }
+    
+    return $numero; 
+}

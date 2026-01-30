@@ -492,7 +492,7 @@ body {
 }
 
 form input[type="text"],
-form input[type="number"],
+form input[type="number"], form input[type="tel"], form input[type="email"],
 form select,
 form textarea {
     width: 100%;
@@ -881,7 +881,7 @@ form textarea {
     position: relative;
 }
 
-.fechar {
+.fechar-estilo {
     position: absolute;
     right: 15px; top: 10px;
     font-size: 24px;
