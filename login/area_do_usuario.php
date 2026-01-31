@@ -32,15 +32,6 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                 <div class="card campo-imagem-editar">
                     <div class="titulo_e_icone">
                         <h3>Informações Pessoais</h3>
-                        <button id="btn-abrir-modal-editar-info">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
-                                <path
-                                    d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                <path d="m15 5 4 4" />
-                            </svg>
-                        </button>
                     </div>
                     <div class="informacoes">
                         <p><strong>Nome: </strong><?= $cliente['nome']; ?></p>
@@ -64,22 +55,39 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                         </a>
                     </button>
                 </div>
-                <div class="informacoes">
+                <div style="width:95%" class="informacoes">
                     <?php if (empty($enderecos)): ?>
                         <p>Você ainda não tem endereços cadastrados.</p>
                     <?php else: ?>
                         <?php foreach ($enderecos as $endereco): ?>
-                            <span style="display: flex; gap:5px; margin-bottom: 5px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin">
-                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-                                    <circle cx="12" cy="10" r="3" />
+                            <span style="display: flex; justify-content:space-between; margin-bottom: 5px;">
+                                <div style="display: flex; gap:5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin">
+                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                    <p><?= $endereco->getLogradouro() . " " . $endereco->getNumero(); ?></p>
+                                </div>
+                                <button class="btn-abrir-modal-editar"
+                                    data-id="<?= $endereco->getId(); ?>"
+                                    data-logradouro="<?= $endereco->getLogradouro(); ?>"
+                                    data-numero="<?= $endereco->getNumero(); ?>"
+                                    data-bairro="<?= $endereco->getBairro(); ?>"
+                                    data-cep="<?= $endereco->getCep(); ?>"
+                                    data-cidade="<?= $endereco->getCidade(); ?>"
+                                    data-uf="<?= $endereco->getUf(); ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
+                                    <path
+                                        d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                    <path d="m15 5 4 4" />
                                 </svg>
-                                <p><?= $endereco->getLogradouro() . " " . $endereco->getNumero(); ?></p>
+                                </button>
                             </span>
                     <?php endforeach;
                     endif; ?>
                 </div>
-            </div>
             </div>
             <div>
 
@@ -160,45 +168,113 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
             </form>
         </div>
     </div>
-    <div id="modal-info" class="modal">
+
+    <div id="modal-editar-endereco" class="modal">
         <div class="modal-conteudo">
-            <span class="fechar-info fechar-estilo">&times;</span>
-            <h2>Editar Informações Pessoais</h2>
-            <form action="editar_info.php" method="POST">
+            <span class="fechar-editar fechar-estilo">&times;</span>
+            <h2>Editar Endereço</h2>
+            <form action="editar_endereco.php" method="POST">
+                <input type="hidden" name="id" id="editar-id">
                 <div>
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" value="<?= $cliente['nome']; ?>">
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="editar-cep" name="cep" placeholder="CEP" required maxlength="9">
                 </div>
                 <div>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="seuemail@email.com" value="<?= $cliente['email']; ?>">
+                    <label for="editar-logradouro">Logradouro:</label>
+                    <input type="text" id="editar-logradouro" name="logradouro" placeholder="Logradouro" required>
                 </div>
+
                 <div>
-                    <label for="telefone">Telefone:</label>
-                    <input type="tel" id="telefone" name="telefone" placeholder="(37)99999-0000" value="<?= formatarTelefone( $cliente['telefone']) ; ?>">
+                    <label for="editar-numero">Numero:</label>
+                    <input type="number" id="editar-numero" name="numero" placeholder="Número" required>
                 </div>
+
+                <div>
+                    <label for="editar-bairro">Bairro:</label>
+                    <input type="text" id="editar-bairro" name="bairro" placeholder="Bairro" required>
+                </div>
+
+                <div>
+                    <label for="editar-cidade">Cidade:</label>
+                    <input type="text" id="editar-cidade" name="cidade" placeholder="Cidade" list="cidades" required>
+                </div>
+
+                <div>
+                    <label for="editar-uf">UF:</label>
+                    <select id="editar-uf" name="uf" required>
+                        <option value="">UF</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RS">RS</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </div>
+
+                <button style="margin-top: 10px;" class="btn_acessar" type="submit">Salvar Endereço</button>
             </form>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             const modal = document.getElementById("modal-endereco");
-            const modalInfo = document.getElementById("modal-info");
+            const modalEditar = document.getElementById("modal-editar-endereco");
+            const botoesEditar = document.querySelectorAll(".btn-abrir-modal-editar");
+            const xEditar = document.querySelector(".fechar-editar");
+
+            botoesEditar.forEach(botao => {
+                botao.onclick = () => {
+                    modalEditar.style.display = "block";
+                    const idEndereco = botao.getAttribute('data-id');
+                    const dataCep = botao.getAttribute('data-cep');
+                    const dataLogradouro = botao.getAttribute('data-logradouro');
+                    const dataNumero = botao.getAttribute('data-numero');
+                    const dataBairro = botao.getAttribute('data-bairro');
+                    const dataCidade = botao.getAttribute('data-cidade');
+                    const dataUf = botao.getAttribute('data-uf');
+                    document.getElementById('editar-id').value = idEndereco;
+                    document.getElementById('editar-cep').value = dataCep;
+                    document.getElementById('editar-logradouro').value = dataLogradouro;
+                    document.getElementById('editar-numero').value = dataNumero;
+                    document.getElementById('editar-bairro').value = dataBairro;
+                    document.getElementById('editar-cidade').value = dataCidade;
+                    document.getElementById('editar-uf').value = dataUf;
+                };
+            });
+
+            xEditar.onclick = () => modalEditar.style.display = "none";
             const btn = document.getElementById("btn-abrir-modal");
-            const btnInfo = document.getElementById("btn-abrir-modal-editar-info");
             const x = document.querySelector(".fechar");
-            const xInfo = document.querySelector(".fechar-info");
 
             btn.onclick = () => modal.style.display = "block";
 
-            btnInfo.onclick = () => modalInfo.style.display = "block";
-
             x.onclick = () => modal.style.display = "none";
-            xInfo.onclick = () => modalInfo.style.display = "none";
 
             window.onclick = (event) => {
                 if (event.target == modal) modal.style.display = "none";
-                if (event.target == modalInfo) modalInfo.style.display = "none";
+                if (event.target == modalEditar) modalEditar.style.display = "none";
             }
 
             function formataCEP(cep_inserido) {

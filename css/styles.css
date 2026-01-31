@@ -893,3 +893,8 @@ form textarea {
     flex-direction: column;
     gap: 10px;
 }
+
+span button {
+    border: none;
+    background-color: white;
+}
