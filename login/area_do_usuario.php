@@ -76,13 +76,13 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                                     data-cep="<?= $endereco->getCep(); ?>"
                                     data-cidade="<?= $endereco->getCidade(); ?>"
                                     data-uf="<?= $endereco->getUf(); ?>">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
-                                    <path
-                                        d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                    <path d="m15 5 4 4" />
-                                </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
+                                        <path
+                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                        <path d="m15 5 4 4" />
+                                    </svg>
                                 </button>
                             </span>
                     <?php endforeach;
@@ -177,7 +177,7 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                 <input type="hidden" name="id" id="editar-id">
                 <div>
                     <label for="cep">CEP:</label>
-                    <input type="text" id="editar-cep" name="cep" placeholder="CEP" required maxlength="9">
+                    <input type="text" id="editar-cep" name="cep" placeholder="CEP" required maxlength="9" onblur="pesquisarCep(this.value, 'editar')" oninput="formataCEP(this)">
                 </div>
                 <div>
                     <label for="editar-logradouro">Logradouro:</label>
@@ -197,11 +197,13 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                 <div>
                     <label for="editar-cidade">Cidade:</label>
                     <input type="text" id="editar-cidade" name="cidade" placeholder="Cidade" list="cidades" required>
+                    <datalist id="editar-cidades">
+                    </datalist>
                 </div>
 
                 <div>
                     <label for="editar-uf">UF:</label>
-                    <select id="editar-uf" name="uf" required>
+                    <select id="editar-uf" name="uf" onchange="carregarCidades(this.value, 'editar')" required>
                         <option value="">UF</option>
                         <option value="AC">AC</option>
                         <option value="AL">AL</option>
@@ -289,43 +291,50 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                 cep_inserido.value = valor;
             }
 
-            function pesquisarCep(valor) {
+            function pesquisarCep(valor, prefixo = '') {
+
+                const p = prefixo ? prefixo + '-' : '';
                 const cep = valor.replace(/\D/g, '');
 
                 if (cep !== "" && cep.length === 8) {
-                    document.getElementById('logradouro').value = "...";
-                    document.getElementById('bairro').value = "...";
-                    document.getElementById('cidade').value = "...";
+
+                    document.getElementById(p + 'logradouro').value = "...";
+                    document.getElementById(p + 'bairro').value = "...";
+                    document.getElementById(p + 'cidade').value = "...";
 
                     fetch(`https://viacep.com.br/ws/${cep}/json/`)
                         .then(res => res.json())
                         .then(dados => {
                             if (!("erro" in dados)) {
-                                document.getElementById('logradouro').value = dados.logradouro;
-                                document.getElementById('bairro').value = dados.bairro;
-                                document.getElementById('cidade').value = dados.localidade;
-                                document.getElementById('uf').value = dados.uf;
-                                carregarCidades(dados.uf);
+                                document.getElementById(p + 'logradouro').value = dados.logradouro;
+                                document.getElementById(p + 'bairro').value = dados.bairro;
+                                document.getElementById(p + 'cidade').value = dados.localidade;
+                                document.getElementById(p + 'uf').value = dados.uf;
+
+                                carregarCidades(dados.uf, prefixo);
                             } else {
                                 alert("CEP não encontrado.");
-                                limparFormulario();
+                                limparFormulario(prefixo);
                             }
                         })
                         .catch(() => alert("Erro ao consultar o CEP."));
                 }
             }
 
-            function limparFormulario() {
-                document.getElementById('logradouro').value = "";
-                document.getElementById('bairro').value = "";
-                document.getElementById('cidade').value = "";
-                document.getElementById('uf').value = "";
+            function limparFormulario(prefixo = '') {
+                const p = prefixo ? prefixo + '-' : '';
+                document.getElementById(p + 'logradouro').value = "";
+                document.getElementById(p+ 'bairro').value = "";
+                document.getElementById(p + 'cidade').value = "";
+                document.getElementById(p + 'uf').value = "";
             }
 
-            function carregarCidades(uf) {
-                const datalist = document.getElementById('cidades');
-                datalist.innerHTML = '';
+            function carregarCidades(uf, prefixo = '') {
+                const p = prefixo ? prefixo + '-' : '';
+                const datalist = document.getElementById(p + 'cidades');
+                if (!datalist) return;
 
+                datalist.innerHTML = '';
                 if (!uf) return;
 
                 fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
@@ -336,8 +345,7 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                             option.value = cidade.nome;
                             datalist.appendChild(option);
                         });
-                    })
-                    .catch(err => console.error("Erro ao carregar cidades do IBGE:", err));
+                    });
             }
 
             document.addEventListener('DOMContentLoaded', function() {
