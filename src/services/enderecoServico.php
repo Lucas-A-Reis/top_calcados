@@ -57,3 +57,22 @@ function listarEnderecos($pdo, $cliente_id)
         return [];
     }
 }
+
+function editarEndereco($pdo, Endereco $endereco){
+    try{
+    $sql = 'UPDATE enderecos SET cep = :cep, logradouro = :logradouro, numero = :numero, bairro = :bairro, cidade = :cidade, uf = :uf WHERE id = :id';
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(":id", $endereco->getId());
+    $stmt->bindValue(":cep", $endereco->getCep());
+    $stmt->bindValue(":logradouro", $endereco->getLogradouro());
+    $stmt->bindValue(":numero", $endereco->getNumero());
+    $stmt->bindValue(":bairro", $endereco->getBairro());
+    $stmt->bindValue(":cidade", $endereco->getCidade());
+    $stmt->bindValue(":uf", $endereco->getUf());
+    $stmt->execute();
+    return true;
+    } catch (PDOException $e) {
+        error_log('Erro ao editar enderço: ' . $e->getMessage());
+        return false;
+    }
+}

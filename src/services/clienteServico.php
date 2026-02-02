@@ -96,13 +96,4 @@ function buscarClientePorId(PDO $pdo, $id)
     return $stmt->fetch();
 }
 
-function editarCliente($pdo, $id, $nome, $telefone, $email)
-{
-    $sql = "UPDATE clientes SET nome = :nome, telefone = :telefone, email = :email WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':nome', $nome);
-    $stmt->bindValue(':telefone', $telefone);
-    $stmt->bindValue(':telefone', $email);
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-}
+

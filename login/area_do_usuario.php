@@ -324,7 +324,7 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
             function limparFormulario(prefixo = '') {
                 const p = prefixo ? prefixo + '-' : '';
                 document.getElementById(p + 'logradouro').value = "";
-                document.getElementById(p+ 'bairro').value = "";
+                document.getElementById(p + 'bairro').value = "";
                 document.getElementById(p + 'cidade').value = "";
                 document.getElementById(p + 'uf').value = "";
             }
@@ -371,10 +371,17 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                 }
 
                 if (urlParams.has('sucesso')) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Endereço salvo com sucesso!'
-                    });
+                    if (urlParams.get('sucesso') == '1') {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Endereço salvo com sucesso!'
+                        });
+                    } else if (urlParams.get('sucesso') == '2') {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Endereço editado com sucesso!'
+                        });
+                    }
                 }
 
                 if (urlParams.has('erro') || urlParams.has('sucesso')) {
