@@ -27,8 +27,8 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
     <?php include '../includes/cabecalho.php'; ?>
     <main style="padding: 10px;">
         <section>
-            <div>
-                <h1 style="margin-bottom:40px">Olá, <br> <?= $_SESSION['cliente_nome']; ?></h1>
+            <h1 style="margin-bottom:40px">Olá, <br> <?= $_SESSION['cliente_nome']; ?></h1>
+            <div style="display:flex; flex-wrap: wrap; gap: 20px;">
                 <div class="card campo-imagem-editar">
                     <div class="titulo_e_icone">
                         <h3>Informações Pessoais</h3>
@@ -39,54 +39,54 @@ $enderecos = listarEnderecos($pdo, $_SESSION['cliente_id']);
                         <p><strong>Telefone: </strong><?= formatarTelefone($cliente['telefone']); ?></p>
                     </div>
                 </div>
-            </div>
-            <div class="card campo-imagem-editar">
-                <div class="titulo_e_icone">
-                    <h3>Endereços</h3>
-                    <button id="btn-abrir-modal">
-                        <a style="color:black">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M8 12h8" />
-                                <path d="M12 8v8" />
-                            </svg>
-                        </a>
-                    </button>
-                </div>
-                <div style="width:95%" class="informacoes">
-                    <?php if (empty($enderecos)): ?>
-                        <p>Você ainda não tem endereços cadastrados.</p>
-                    <?php else: ?>
-                        <?php foreach ($enderecos as $endereco): ?>
-                            <span style="display: flex; justify-content:space-between; margin-bottom: 5px;">
-                                <div style="display: flex; gap:5px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin">
-                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-                                        <circle cx="12" cy="10" r="3" />
-                                    </svg>
-                                    <p><?= $endereco->getLogradouro() . " " . $endereco->getNumero(); ?></p>
-                                </div>
-                                <button class="btn-abrir-modal-editar"
-                                    data-id="<?= $endereco->getId(); ?>"
-                                    data-logradouro="<?= $endereco->getLogradouro(); ?>"
-                                    data-numero="<?= $endereco->getNumero(); ?>"
-                                    data-bairro="<?= $endereco->getBairro(); ?>"
-                                    data-cep="<?= $endereco->getCep(); ?>"
-                                    data-cidade="<?= $endereco->getCidade(); ?>"
-                                    data-uf="<?= $endereco->getUf(); ?>">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
-                                        <path
-                                            d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                        <path d="m15 5 4 4" />
-                                    </svg>
-                                </button>
-                            </span>
-                    <?php endforeach;
-                    endif; ?>
+                <div class="card campo-imagem-editar">
+                    <div class="titulo_e_icone">
+                        <h3>Endereços</h3>
+                        <button id="btn-abrir-modal">
+                            <a style="color:black">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M8 12h8" />
+                                    <path d="M12 8v8" />
+                                </svg>
+                            </a>
+                        </button>
+                    </div>
+                    <div style="width:95%" class="informacoes">
+                        <?php if (empty($enderecos)): ?>
+                            <p>Você ainda não tem endereços cadastrados.</p>
+                        <?php else: ?>
+                            <?php foreach ($enderecos as $endereco): ?>
+                                <span style="display: flex; justify-content:space-between; margin-bottom: 5px;">
+                                    <div style="display: flex; gap:5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin">
+                                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                                            <circle cx="12" cy="10" r="3" />
+                                        </svg>
+                                        <p><?= $endereco->getLogradouro() . " " . $endereco->getNumero(); ?></p>
+                                    </div>
+                                    <button class="btn-abrir-modal-editar"
+                                        data-id="<?= $endereco->getId(); ?>"
+                                        data-logradouro="<?= $endereco->getLogradouro(); ?>"
+                                        data-numero="<?= $endereco->getNumero(); ?>"
+                                        data-bairro="<?= $endereco->getBairro(); ?>"
+                                        data-cep="<?= $endereco->getCep(); ?>"
+                                        data-cidade="<?= $endereco->getCidade(); ?>"
+                                        data-uf="<?= $endereco->getUf(); ?>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil">
+                                            <path
+                                                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                            <path d="m15 5 4 4" />
+                                        </svg>
+                                    </button>
+                                </span>
+                        <?php endforeach;
+                        endif; ?>
+                    </div>
                 </div>
             </div>
             <div>
