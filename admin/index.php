@@ -22,6 +22,7 @@ require_once 'autenticacao.php';
             <li><a href="clientes.php">Clientes</a></li>
             <li><a href="historico.php">Histórico</a></li>
             <li><a href="logout.php">Sair</a></li>
+            <li><a href="calcados_imagens_carrossel.php">Sair</a></li>
         </ul>
     </nav>
 </body>
