@@ -12,7 +12,7 @@ if (isset($_SESSION['cliente_id'])){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
