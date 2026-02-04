@@ -1042,6 +1042,7 @@ span button {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 1.5rem;
+    min-height: 2.4em;
 }
 
 .btn-comprar {
@@ -1073,4 +1074,23 @@ span button {
 
 .card-homepage:hover .imagem {
     transform: scale(1.05)
+}
+
+.cards-section {
+    margin: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cards {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: clamp(10px, 8vw, 30px);
+    justify-content: space-around;
+}
+
+.cards ::-webkit-scrollbar {
+    display: none;
 }

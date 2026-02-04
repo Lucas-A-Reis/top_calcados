@@ -95,30 +95,34 @@ foreach ($imagens as $imagem) {
             </a>
         </section>
     </div>
-    <section class="cards">
+    <section class="cards-section">
         <h2 class="titulo_da_secao">Destaques</h2>
-        <?php foreach ($destaques as $destaque):
-            $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
-            <article class="card-homepage">
-                <div class="imagem-container">
-                    <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
-                </div>
-                <div class="informacoes_do_calcado">
-                    <span class="cores">
-                        <?php if(count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
-                            <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
-                        <?php endforeach; else: echo "<div style='height:20px;'></div>"; endif; ?>
-                    </span>
-                    <h3 class="nome">
-                        <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
-                    </h3>
-                    <span class="preco">
-                        <?= formatarPreco($destaque->getPreco()) ?>
-                    </span>
-                </div>
-                <button class="btn-comprar">Comprar</button>
-            </article>
-        <?php endforeach ?>
+        <div class="cards">
+            <?php foreach ($destaques as $destaque):
+                $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
+                <article class="card-homepage">
+                    <div class="imagem-container">
+                        <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
+                    </div>
+                    <div class="informacoes_do_calcado">
+                        <span class="cores">
+                            <?php if (count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
+                                    <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
+                            <?php endforeach;
+                            else: echo "<div style='height:20px;'></div>";
+                            endif; ?>
+                        </span>
+                        <h3 class="nome">
+                            <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
+                        </h3>
+                        <span class="preco">
+                            <?= formatarPreco($destaque->getPreco()) ?>
+                        </span>
+                    </div>
+                    <button class="btn-comprar">Comprar</button>
+                </article>
+            <?php endforeach ?>
+        </div>
     </section>
     <?php include '../includes/rodape.html'; ?>
     <script>
