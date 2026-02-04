@@ -62,38 +62,42 @@ foreach ($imagens as $imagem) {
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <section id="bolinhas">
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-            <a href=""><img src="../media/img/logo.webp" alt="">
-                <p>Rasteirinhas</p>
-            </a>
-        </section>
+        <div class="scroll-container">
+            <button class="seta-scroll esquerda" onclick="scrollBolinhas(-200)">&#10094;</button>
+            <section id="bolinhas">
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas1</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas2</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas3</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas4</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas5</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas6</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas7</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas8</p>
+                </a>
+                <a href=""><img src="../media/img/logo.webp" alt="">
+                    <p>Rasteirinhas9</p>
+                </a>
+            </section>
+            <button class="seta-scroll direita" onclick="scrollBolinhas(200)">&#10095;</button>
+        </div>
     </div>
     <section class="cards-section">
         <h2 class="titulo_da_secao">Destaques</h2>
