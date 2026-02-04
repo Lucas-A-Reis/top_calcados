@@ -99,15 +99,15 @@ foreach ($imagens as $imagem) {
         <h2 class="titulo_da_secao">Destaques</h2>
         <?php foreach ($destaques as $destaque):
             $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
-            <article class="card">
+            <article class="card-homepage">
                 <div class="imagem-container">
-                    <img class="imagem" src=<?= "../media/img/calcados/".buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
+                    <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
                 </div>
                 <div class="informacoes_do_calcado">
                     <span class="cores">
-                        <?php foreach ($variacoes_por_modelo as $variacao): ?>
+                        <?php if(count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
                             <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
-                        <?php endforeach ?>
+                        <?php endforeach; else: echo "<div style='height:20px;'></div>"; endif; ?>
                     </span>
                     <h3 class="nome">
                         <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
@@ -122,29 +122,38 @@ foreach ($imagens as $imagem) {
     </section>
     <?php include '../includes/rodape.html'; ?>
     <script>
-        const bolinhaGrande = document.querySelector('.bolinha-grande');
+        const bolinhas = document.querySelectorAll('.bolinha-grande');
         const imagem = document.querySelector('.imagem');
 
-        bolinhaGrande.onclick = () => {
-            const post = {
-                variacao_id: bolinhaGrande.getAttribute('data-id')
-            };
+        bolinhas.forEach(bolinha => {
+            bolinha.onclick = () => {
+                const idVariacao = bolinha.getAttribute('data-id');
 
-            fetch('buscar_imagem.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(post),
-                })
-                .then(response => response.json())
-                .then(nomeDoArquivo => {
-                    if (nomeDoArquivo) {
-                        imagem.src = `../media/img/calcados/${nomeDoArquivo}`;
-                    }
-                })
-                .catch(error => console.error('Erro ao buscar imagem:', error));
-        };
+                fetch('buscar_imagem.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: idVariacao
+                        }),
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Erro na rede');
+                        return response.json();
+                    })
+                    .then(nomeDoArquivo => {
+                        if (nomeDoArquivo) {
+                            imagem.src = `../media/img/calcados/${nomeDoArquivo}`;
+
+                            imagem.classList.remove('fade-in');
+                            void imagem.offsetWidth;
+                            imagem.classList.add('fade-in');
+                        }
+                    })
+                    .catch(error => console.error('Erro:', error));
+            };
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
