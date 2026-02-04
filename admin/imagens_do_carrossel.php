@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         }
     }
     if (empty($erros)) {
-        header("Location: calcados_imagens_carrossel.php?sucesso=4");
+        header("Location: imagens_do_carrossel.php?sucesso=4");
         exit();
     }
 }
@@ -100,9 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         <?php $nome = " Imagem ";
         include '../includes/alertas.php'; ?>
     </form>
-
-    <a style="margin-top:40px"
-        href="index.php">Voltar</a>
 
     <script src="js/alertas.js"></script>
 </body>

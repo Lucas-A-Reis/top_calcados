@@ -93,8 +93,6 @@ if (!$modelo) {
 
         <div class="grid">
             <h3>Público</h3>
-
-            <h3>Público</h3>
             <select name="genero" value="<?php echo htmlspecialchars($modelo->getGenero() ?? ''); ?>">
                 <option value="masculino">Masculino</option>
                 <option value="feminino">Feminino</option>
@@ -105,37 +103,39 @@ if (!$modelo) {
                 <option value="adulto">Adulto</option>
             </select>
         </div>
-        </div>
 
         <div class="grid">
-            <h3>Descrição e Slug</h3>
+            <h3>Descrição</h3>
 
             <textarea name="descricao"
                 placeholder="Breve descrição do calçado"><?php echo htmlspecialchars($modelo->getDescricao() ?? ''); ?></textarea>
-
-        <div class="grid">
-            <h3>Configurações de Exibição</h3>
-            <select name="status">
-                <option value="1" <?php echo $modelo->getStatus() == 1 ? 'selected' : ''; ?>>Ativo</option>
-                <option value="0" <?php echo $modelo->getStatus() == 0 ? 'selected' : ''; ?>>Inativo</option>
-            </select>
-
-            <label>
-                <input type="checkbox" name="destaque" value="1" <?php echo $modelo->getDestaque() ? 'checked' : ''; ?>>
-                Destaque na Loja
-            </label>
         </div>
 
-        <div class="grid">
-            <h3>Slug</h3>
-            <input type="text" name="slug" placeholder="Slug(Ex: nike-air-max)"
-                value="<?php echo htmlspecialchars($modelo->getSlug()); ?>" required>
-        </div>
+            <div class="grid">
+                <h3>Configurações de Exibição</h3>
+                <select name="status">
+                    <option value="1" <?php echo $modelo->getStatus() == 1 ? 'selected' : ''; ?>>Ativo</option>
+                    <option value="0" <?php echo $modelo->getStatus() == 0 ? 'selected' : ''; ?>>Inativo</option>
+                </select>
 
-        <button class="btn_acessar" type="submit" style="margin-top: 20px;">
-            Salvar Alterações
-        </button>
+                <label>
+                    <input type="checkbox" name="destaque" value="1" <?php echo $modelo->getDestaque() ? 'checked' : ''; ?>>
+                    Destaque na Loja
+                </label>
+            </div>
+
+            <div class="grid">
+                <h3>Slug</h3>
+                <input type="text" name="slug" placeholder="Slug(Ex: nike-air-max)"
+                    value="<?php echo htmlspecialchars($modelo->getSlug()); ?>" required>
+            </div>
+
+            <button class="btn_acessar" type="submit" style="margin-top: 20px;">
+                Salvar Alterações
+            </button>
     </form>
+
+    <a style="margin:20px;" href="calcados_gerenciar_modelos.php">Voltar</a>
 </body>
 
 </html>

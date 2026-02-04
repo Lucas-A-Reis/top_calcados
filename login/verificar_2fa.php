@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin_nome'] = $admin['nome'];
         
         unset($_SESSION['auth_admin_id']);
-        header("Location: ../admin/index.php");
+        header("Location: ../admin/calcados_gerenciar_modelos.php");
         exit();
     } else {
         $erro = "Código inválido ou expirado. Tente novamente.";

@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->commit();
                 $flag = true;
             }
-
         } catch (Exception $e) {
             $pdo->rollBack();
             error_log($e->getMessage());
@@ -82,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         header('Location: calcados_gerenciar_variacoes.php?id=' . $id . '&erro=1');
     }
-
 }
 ?>
 
@@ -213,6 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php else: ?>
         <p class="alerta-erro">Nenhuma variação cadastrada ainda</p>
     <?php endif ?>
+
+    <a style="margin:20px;" href="calcados_gerenciar_modelos.php">Voltar</a>
 
     <script src="js/alertas.js"></script>
 </body>

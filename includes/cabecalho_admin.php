@@ -2,7 +2,8 @@
     <?php
     $arquivo_atual = basename($_SERVER['PHP_SELF']);
     $titulo = ucwords(str_replace('_', ' ', basename($arquivo_atual, '.php')));
-    echo "<h1>Painel Administrativo - " . str_ireplace('calcados' || 'clientes', '', $titulo) . "</h1>";
+    $termos_para_remover = ['Calcados', 'Clientes'];
+    echo $arquivo_atual === 'clientes.php' ? "<h1>Painel Administrativo - " . $titulo . "</h1>" : "<h1>Painel Administrativo - " . str_ireplace($termos_para_remover, '', $titulo) . "</h1>";
     ?>
     <nav id="nav_admin">
         <ul>
@@ -10,7 +11,8 @@
             $links = [
                 'calcados_gerenciar_modelos.php' => 'Calçados',
                 'clientes.php' => 'Clientes',
-                'historico.php' => 'Histórico'
+                'historico.php' => 'Histórico',
+                'imagens_do_carrossel.php' => 'Carrossel'
             ];
 
             foreach ($links as $url => $label):

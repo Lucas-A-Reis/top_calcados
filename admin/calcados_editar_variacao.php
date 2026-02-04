@@ -87,6 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php include '../includes/alerta_de_erro.php'; ?>
 
     </form>
+
+        
+    <a style="margin: 20px;" href=<?= "calcados_gerenciar_variacoes.php?id=".$modeloId ?>>Voltar</a>
+
 </body>
 
 </html>
