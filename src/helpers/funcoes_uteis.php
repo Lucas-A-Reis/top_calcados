@@ -223,3 +223,9 @@ function formatarTelefone($numero) {
     
     return $numero; 
 }
+
+function formatarPreco($valor) {
+    $valor = (float) $valor;
+    
+    return 'R$ ' . number_format($valor, 2, ',', '.');
+}

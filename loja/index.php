@@ -5,9 +5,23 @@ require_once  '../src/database/conecta.php';
 require_once '../src/models/imagem.php';
 require_once '../src/services/imagemServico.php';
 require_once '../src/helpers/funcoes_uteis.php';
+require_once '../src/models/modelo.php';
+require_once '../src/services/modeloServico.php';
+require_once '../src/models/variacao.php';
+require_once '../src/services/variacaoServico.php';
+
+
+$modelos = array_filter(listarModelos($pdo), function ($item) {
+    return $item->getStatus() === 1;
+});
+
+$destaques = array_filter($modelos, function ($item) {
+    return $item->getDestaque() === 1;
+});
+
 
 $imagens = buscarImagensPorVariacaoId($pdo, 38);
-foreach($imagens as $imagem) {
+foreach ($imagens as $imagem) {
     $nomes_dos_arquivos[] = $imagem->getCaminhoArquivo();
 }
 
@@ -20,7 +34,7 @@ foreach($imagens as $imagem) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Top Calçados</title>
 </head>
 
@@ -81,7 +95,57 @@ foreach($imagens as $imagem) {
             </a>
         </section>
     </div>
+    <section class="cards">
+        <h2 class="titulo_da_secao">Destaques</h2>
+        <?php foreach ($destaques as $destaque):
+            $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
+            <article class="card">
+                <div class="imagem-container">
+                    <img class="imagem" src=<?= "../media/img/calcados/".buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
+                </div>
+                <div class="informacoes_do_calcado">
+                    <span class="cores">
+                        <?php foreach ($variacoes_por_modelo as $variacao): ?>
+                            <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
+                        <?php endforeach ?>
+                    </span>
+                    <h3 class="nome">
+                        <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
+                    </h3>
+                    <span class="preco">
+                        <?= formatarPreco($destaque->getPreco()) ?>
+                    </span>
+                </div>
+                <button class="btn-comprar">Comprar</button>
+            </article>
+        <?php endforeach ?>
+    </section>
     <?php include '../includes/rodape.html'; ?>
+    <script>
+        const bolinhaGrande = document.querySelector('.bolinha-grande');
+        const imagem = document.querySelector('.imagem');
+
+        bolinhaGrande.onclick = () => {
+            const post = {
+                variacao_id: bolinhaGrande.getAttribute('data-id')
+            };
+
+            fetch('buscar_imagem.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(post),
+                })
+                .then(response => response.json())
+                .then(nomeDoArquivo => {
+                    if (nomeDoArquivo) {
+                        imagem.src = `../media/img/calcados/${nomeDoArquivo}`;
+                    }
+                })
+                .catch(error => console.error('Erro ao buscar imagem:', error));
+        };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 
