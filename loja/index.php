@@ -15,6 +15,7 @@ $modelos = array_filter(listarModelos($pdo), function ($item) {
     return $item->getStatus() === 1;
 });
 
+
 $destaques = array_filter($modelos, function ($item) {
     return $item->getDestaque() === 1;
 });
@@ -125,7 +126,40 @@ foreach ($imagens as $imagem) {
                                 <?= formatarPreco($destaque->getPreco()) ?>
                             </span>
                         </div>
-                        <button class="btn-comprar">Comprar</button>
+                        <a href=<?= "pagina_do_produto.php?id=".$destaque->getId() ?> class="btn-comprar">Comprar</a>
+                    </article>
+                <?php endforeach ?>
+            </div>
+            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
+        </div>
+    </section>
+    <section class="cards-section">
+        <h2 class="titulo_da_secao">Novidades</h2>
+        <div class="scroll-container">
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <div class="cards-wrap scroll-content">
+                <?php foreach ($modelos as $modelo):
+                    $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $modelo->getId()); ?>
+                    <article class="card-homepage">
+                        <div class="imagem-container">
+                            <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
+                        </div>
+                        <div class="informacoes_do_calcado">
+                            <span class="cores">
+                                <?php if (count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
+                                        <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
+                                <?php endforeach;
+                                else: echo "<div style='height:20px;'></div>";
+                                endif; ?>
+                            </span>
+                            <h3 class="nome">
+                                <?= $modelo->getMarca() . " " . $modelo->getTipo() ?>
+                            </h3>
+                            <span class="preco">
+                                <?= formatarPreco($modelo->getPreco()) ?>
+                            </span>
+                        </div>
+                        <a href=<?= "pagina_do_produto.php?id=".$modelo->getId() ?> class="btn-comprar">Comprar</a>
                     </article>
                 <?php endforeach ?>
             </div>
@@ -195,6 +229,7 @@ foreach ($imagens as $imagem) {
         document.querySelectorAll('.scroll-content').forEach(section => {
             section.addEventListener('scroll', () => gerenciarSetas(section));
 
+            window.addEventListener('resize', () => gerenciarSetas(section));
             gerenciarSetas(section);
         });
     </script>

@@ -1048,6 +1048,9 @@ span button {
 }
 
 .btn-comprar {
+    display: block;
+    text-align: center;
+    text-decoration: none;
     background-color: #1A8784;
     color: white;
     padding: 12px;
@@ -1094,6 +1097,13 @@ span button {
     justify-content: space-around;
 }
 
+.cards-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(10px, 8vw, 30px);
+    justify-content: flex-start;
+}
+
 .cards ::-webkit-scrollbar {
     display: none;
 }
@@ -1110,7 +1120,7 @@ span button {
     z-index: 10;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #AB73DC;
     color: white;
     border: none;
     border-radius: 50%;
@@ -1124,7 +1134,6 @@ span button {
     transition: opacity 0.3s ease;
 }
 
-
 .esquerda {
     left: 10px;
     display: none;
@@ -1132,4 +1141,8 @@ span button {
 
 .direita {
     right: 10px;
+}
+
+.titulo_da_secao {
+    color:#44027E;
 }
