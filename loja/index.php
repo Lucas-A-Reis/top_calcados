@@ -63,8 +63,8 @@ foreach ($imagens as $imagem) {
             </button>
         </div>
         <div class="scroll-container">
-            <button class="seta-scroll esquerda" onclick="scrollBolinhas(-200)">&#10094;</button>
-            <section id="bolinhas">
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <section id="bolinhas" class="scroll-content">
                 <a href=""><img src="../media/img/logo.webp" alt="">
                     <p>Rasteirinhas</p>
                 </a>
@@ -96,36 +96,40 @@ foreach ($imagens as $imagem) {
                     <p>Rasteirinhas9</p>
                 </a>
             </section>
-            <button class="seta-scroll direita" onclick="scrollBolinhas(200)">&#10095;</button>
+            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
         </div>
     </div>
     <section class="cards-section">
         <h2 class="titulo_da_secao">Destaques</h2>
-        <div class="cards">
-            <?php foreach ($destaques as $destaque):
-                $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
-                <article class="card-homepage">
-                    <div class="imagem-container">
-                        <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
-                    </div>
-                    <div class="informacoes_do_calcado">
-                        <span class="cores">
-                            <?php if (count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
-                                    <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
-                            <?php endforeach;
-                            else: echo "<div style='height:20px;'></div>";
-                            endif; ?>
-                        </span>
-                        <h3 class="nome">
-                            <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
-                        </h3>
-                        <span class="preco">
-                            <?= formatarPreco($destaque->getPreco()) ?>
-                        </span>
-                    </div>
-                    <button class="btn-comprar">Comprar</button>
-                </article>
-            <?php endforeach ?>
+        <div class="scroll-container">
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <div class="cards scroll-content">
+                <?php foreach ($destaques as $destaque):
+                    $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
+                    <article class="card-homepage">
+                        <div class="imagem-container">
+                            <img class="imagem" src=<?= "../media/img/calcados/" . buscarImagensPorVariacaoId($pdo, $variacoes_por_modelo[0]->getId())[0]->getCaminhoArquivo() ?> alt="">
+                        </div>
+                        <div class="informacoes_do_calcado">
+                            <span class="cores">
+                                <?php if (count($variacoes_por_modelo) > 1): foreach ($variacoes_por_modelo as $variacao): ?>
+                                        <div style="background-color: <?= $variacao->getCorHex() ?>;" class="bolinha-grande" data-id="<?= $variacao->getId() ?>"></div>
+                                <?php endforeach;
+                                else: echo "<div style='height:20px;'></div>";
+                                endif; ?>
+                            </span>
+                            <h3 class="nome">
+                                <?= $destaque->getMarca() . " " . $destaque->getTipo() ?>
+                            </h3>
+                            <span class="preco">
+                                <?= formatarPreco($destaque->getPreco()) ?>
+                            </span>
+                        </div>
+                        <button class="btn-comprar">Comprar</button>
+                    </article>
+                <?php endforeach ?>
+            </div>
+            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
         </div>
     </section>
     <?php include '../includes/rodape.html'; ?>
@@ -161,6 +165,37 @@ foreach ($imagens as $imagem) {
                     })
                     .catch(error => console.error('Erro:', error));
             };
+        });
+
+        function scrollar(botao, distancia) {
+            const pai = botao.parentElement;
+
+            const scrollavel = pai.querySelector('.scroll-content');
+
+            scrollavel.scrollBy({
+                left: distancia,
+                behavior: 'smooth'
+            });
+        }
+
+        function gerenciarSetas(container) {
+            const pai = container.parentElement;
+            const setaEsquerda = pai.querySelector('.esquerda');
+            const setaDireita = pai.querySelector('.direita');
+
+            const scrollEsquerda = container.scrollLeft;
+            const larguraTotal = container.scrollWidth;
+            const larguraVisivel = container.clientWidth;
+
+            setaEsquerda.style.display = scrollEsquerda > 5 ? "flex" : "none";
+
+            setaDireita.style.display = (scrollEsquerda + larguraVisivel) >= (larguraTotal - 5) ? "none" : "flex";
+        }
+
+        document.querySelectorAll('.scroll-content').forEach(section => {
+            section.addEventListener('scroll', () => gerenciarSetas(section));
+
+            gerenciarSetas(section);
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

@@ -1121,11 +1121,13 @@ span button {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.3s ease;
 }
 
 
 .esquerda {
     left: 10px;
+    display: none;
 }
 
 .direita {
