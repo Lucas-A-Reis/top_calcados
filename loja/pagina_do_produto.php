@@ -20,9 +20,23 @@ if (!$id) {
 $modelo = buscarModeloPorId($pdo, $id);
 $variacoes = buscarVariacoesPorModelo($pdo, $id);
 
+$imagens = [];
+$cores = [];
+$nomes = [];
+
 foreach ($variacoes as $variacao) {
-    $imagens[] = buscarImagensPorVariacaoId($pdo, $variacao->getId());
+    $id = $variacao->getId();
+    $nomeCor = $variacao->getCor();
+    $hexCor = $variacao->getCorHex();
+
+    $imagens[] = buscarImagensPorVariacaoId($pdo, $id);
+    
+    $cores[$nomeCor] = $hexCor; 
+    
+    $nomes[] = $nomeCor;
 }
+
+var_dump($cores);
 
 ?>
 
@@ -54,12 +68,11 @@ foreach ($variacoes as $variacao) {
             <form action="sacola.php" method="POST">
                 <div class="container-cores">
                     <h2>Cores</h2>
-                    <?php foreach($variacoes as $variacao): ?>
-                        <input type="radio" name="cor" value="<?= $variacao->getId() ?>" id="<?= 'cor_'.$variacao->getId() ?>" style="display:none;" >
-                        <label for="<?= 'cor_'.$variacao->getId() ?>" style="<?= 'background-color:'.$variacao->getCorHex() ?>" class="bolinha-maior"></label>
+                    <?php foreach ($cores as $cor => $corHex): ?>
+                        <input type="radio" name="cor" value="<?= $cor ?>" id="<?= $cor ?>" style="display:none;">
+                        <label for="<?= $cor ?>" style="<?= 'background-color:' . $corHex ?>" class="bolinha-maior"></label> 
                     <?php endforeach ?>
                 </div>
-                
                 <label for="quantidade"></label>
                 <input id="quantidade" name="quantidade" type="number">
                 <button formaction="" type="submit" class="btn-comprar">Comprar</button>

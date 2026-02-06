@@ -128,3 +128,10 @@ function excluirVariacao(PDO $pdo, int $idVariacao) {
         return false;
     }
 }
+
+function listarCores(PDO $pdo){
+    $sql = 'SELECT cor FROM variacoes_calcado';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
