@@ -20,7 +20,7 @@ if (!$id) {
 $modelo = buscarModeloPorId($pdo, $id);
 $variacoes = buscarVariacoesPorModelo($pdo, $id);
 
-foreach($variacoes as $variacao){
+foreach ($variacoes as $variacao) {
     $imagens[] = buscarImagensPorVariacaoId($pdo, $variacao->getId());
 }
 
@@ -28,12 +28,14 @@ foreach($variacoes as $variacao){
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $modelo->getMarca()." ".$modelo->getTipo() ?></title>
+    <title><?= $modelo->getMarca() . " " . $modelo->getTipo() ?></title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
     <?php include '../includes/cabecalho.php'; ?>
     <main>
@@ -49,18 +51,23 @@ foreach($variacoes as $variacao){
                 <p>descrição</p>
                 <span>preço</span>
             </section>
-            <form action="">
-                <label for="cor">Cor:</label>
-                <input name="cor" class="cor" type="radio">
-                <label for="tamanho">Tamanho:</label>
-                <input name="tamanho" class="tamanho" type="radio">
+            <form action="sacola.php" method="POST">
+                <div class="container-cores">
+                    <h2>Cores</h2>
+                    <?php foreach($variacoes as $variacao): ?>
+                        <input type="radio" name="cor" value="<?= $variacao->getId() ?>" id="<?= 'cor_'.$variacao->getId() ?>" style="display:none;" >
+                        <label for="<?= 'cor_'.$variacao->getId() ?>" style="<?= 'background-color:'.$variacao->getCorHex() ?>" class="bolinha-maior"></label>
+                    <?php endforeach ?>
+                </div>
+                
                 <label for="quantidade"></label>
                 <input id="quantidade" name="quantidade" type="number">
-                <button type="submit">Comprar</button>
+                <button formaction="" type="submit" class="btn-comprar">Comprar</button>
+                <button type="submit" class="btn-sacola">Adicionar à Sacola</button>
             </form>
-            <button>Adicionar à Sacola</button>
         </div>
     </main>
     <?php include '../includes/rodape.html'; ?>
 </body>
+
 </html>

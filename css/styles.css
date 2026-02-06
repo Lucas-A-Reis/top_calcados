@@ -998,6 +998,28 @@ span button {
     transform: scale(1.2);
 }
 
+.bolinha-maior {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: all 0.2s ease-in-out;
+    margin-right: 10px;
+}
+
+.bolinha-maior:hover {
+    transform: scale(1.1);
+    border-color: #999;
+}
+
+.container-cores input:checked + .bolinha-maior{
+    border-color: #551A88; 
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #551A88;
+    transform: scale(1.2);
+}
+
 .imagem-container {
     width: 100%;
     height: 300px;
@@ -1065,6 +1087,26 @@ span button {
 
 .btn-comprar:hover {
     background-color: #146a68;
+}
+
+.btn-sacola {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background-color: transparent;
+    color: #1A8784;
+    border: solid 1px #1A8784;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.btn-sacola:hover {
+    background-color: #e4e4e1;
 }
 
 .card-homepage {
@@ -1144,5 +1186,5 @@ span button {
 }
 
 .titulo_da_secao {
-    color:#44027E;
+    color: #44027E;
 }

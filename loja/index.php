@@ -10,6 +10,10 @@ require_once '../src/services/modeloServico.php';
 require_once '../src/models/variacao.php';
 require_once '../src/services/variacaoServico.php';
 
+if (!isset($_SESSION['sacola'])) {
+    $_SESSION['sacola'] = [];
+}
+
 
 $modelos = array_filter(listarModelos($pdo), function ($item) {
     return $item->getStatus() === 1;
@@ -64,7 +68,7 @@ foreach ($imagens as $imagem) {
             </button>
         </div>
         <div class="scroll-container">
-            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -400)">&#10094;</button>
             <section id="bolinhas" class="scroll-content">
                 <a href=""><img src="../media/img/logo.webp" alt="">
                     <p>Rasteirinhas</p>
@@ -97,13 +101,13 @@ foreach ($imagens as $imagem) {
                     <p>Rasteirinhas9</p>
                 </a>
             </section>
-            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
+            <button class="seta-scroll direita" onclick="scrollar(this, 400)">&#10095;</button>
         </div>
     </div>
     <section class="cards-section">
         <h2 class="titulo_da_secao">Destaques</h2>
         <div class="scroll-container">
-            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -400)">&#10094;</button>
             <div class="cards scroll-content">
                 <?php foreach ($destaques as $destaque):
                     $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $destaque->getId()); ?>
@@ -130,13 +134,13 @@ foreach ($imagens as $imagem) {
                     </article>
                 <?php endforeach ?>
             </div>
-            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
+            <button class="seta-scroll direita" onclick="scrollar(this, 400)">&#10095;</button>
         </div>
     </section>
     <section class="cards-section">
         <h2 class="titulo_da_secao">Novidades</h2>
         <div class="scroll-container">
-            <button class="seta-scroll esquerda" onclick="scrollar(this, -200)">&#10094;</button>
+            <button class="seta-scroll esquerda" onclick="scrollar(this, -400)">&#10094;</button>
             <div class="cards-wrap scroll-content">
                 <?php foreach ($modelos as $modelo):
                     $variacoes_por_modelo = buscarVariacoesPorModelo($pdo, $modelo->getId()); ?>
@@ -163,7 +167,7 @@ foreach ($imagens as $imagem) {
                     </article>
                 <?php endforeach ?>
             </div>
-            <button class="seta-scroll direita" onclick="scrollar(this, 200)">&#10095;</button>
+            <button class="seta-scroll direita" onclick="scrollar(this, 400)">&#10095;</button>
         </div>
     </section>
     <?php include '../includes/rodape.html'; ?>
